@@ -1,23 +1,23 @@
-output "ipv4" {
-    value = module.clusterbase.lb_ipv4
+output "lb_ipv4" {
+    value = module.cluster.lb_ipv4
 }
 
-output "ipv6" {
-    value = module.clusterbase.lb_ipv6
+output "lb_ipv6" {
+    value = module.cluster.lb_ipv6
 }
 
-output "agent_ipv4" {
-    value = module.agentpool.ipv4s
+output "master_ipv4s" {
+    value = module.cluster.master_ipv4s
 }
 
-output "agent_ipv6" {
-    value = module.agentpool.ipv6s
+output "master_ipv6s" {
+    value = module.cluster.master_ipv6s
 }
 
-output "master_ipv4" {
-    value = module.masterpool.ipv4s
+output "agent_ipv4s" {
+    value = module.cluster.agent_ipv4s
 }
 
-output "master_ipv6" {
-    value = module.masterpool.ipv6s
+output "agent_ipv6s" {
+    value = module.cluster.agent_ipv6s
 }
