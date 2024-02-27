@@ -4,7 +4,7 @@
 .vscode/
 .classpath
 .DS_Store
-.env
 .project
 *.iml
+*.tfvars
 terraform.tfstate*
