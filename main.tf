@@ -1,6 +1,6 @@
 module "clusterbase" {
-    clustername  = var.clustername
     source       = "./clusterbase"
+    clustername  = var.clustername
     hcloud_token = var.hcloud_token
 }
 
@@ -30,5 +30,5 @@ module "agentpool" {
     network_id          = module.clusterbase.network_id
     lb_id               = module.clusterbase.lb_id
     api_token           = var.api_token
-    agent_count         = 3
+    agent_count         = 0
 }

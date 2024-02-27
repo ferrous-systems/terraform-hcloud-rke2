@@ -15,5 +15,5 @@ variable "clustername" {
 
 variable "api_token" {
     type        = string
-    description = "Hetzner API token with read permission to read LB state"
+    description = "Hetzner API token to read load balancer state"
 }

@@ -1,7 +1,10 @@
 .idea/
 .settings/
+.terraform/
 .vscode/
 .classpath
 .DS_Store
+.env
 .project
 *.iml
+terraform.tfstate*
