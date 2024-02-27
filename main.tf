@@ -1,12 +1,10 @@
 module "clusterbase" {
     source       = "./clusterbase"
     clustername  = var.clustername
-    hcloud_token = var.hcloud_token
 }
 
 module "masterpool" {
     source              = "./masterpool"
-    hcloud_token        = var.hcloud_token
     rke2_cluster_secret = var.rke2_cluster_secret
     clustername         = var.clustername
     lb_ip               = module.clusterbase.lb_ip
@@ -22,7 +20,6 @@ module "masterpool" {
 
 module "agentpool" {
     source              = "./agentpool"
-    hcloud_token        = var.hcloud_token
     rke2_cluster_secret = var.rke2_cluster_secret
     clustername         = var.clustername
     lb_ip               = module.clusterbase.lb_ip
