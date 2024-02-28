@@ -13,7 +13,7 @@ resource "hcloud_network_subnet" "cluster" {
 resource "hcloud_load_balancer" "cluster" {
     name               = "${var.clustername}-cluster"
     load_balancer_type = var.lb_type
-    network_zone       = var.networkzone
+    location           = var.location
 }
 
 resource "hcloud_load_balancer_network" "cluster" {
@@ -73,7 +73,7 @@ resource "hcloud_server" "master" {
         cluster : var.clustername,
         master : "true"
     }
-    backups   = true
+    backups   = false
     ssh_keys  = [hcloud_ssh_key.root.name]
     user_data = templatefile("${path.module}/master_userdata.tftpl", {
         extra_ssh_keys      = var.extra_ssh_keys,
@@ -106,7 +106,7 @@ resource "hcloud_server" "agent" {
         cluster : var.clustername,
         agent : "true"
     }
-    backups   = true
+    backups   = false
     ssh_keys  = [hcloud_ssh_key.root.name]
     user_data = templatefile("${path.module}/agent_userdata.tftpl", {
         extra_ssh_keys      = var.extra_ssh_keys,
