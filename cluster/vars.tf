@@ -1,5 +1,6 @@
 variable "hcloud_token" {
-    type = string
+    type        = string
+    sensitive   = true
     description = "Hetzner Cloud API token"
 }
 
@@ -31,10 +32,10 @@ variable "network" {
     description = "network to use"
 }
 
-variable "subnetwork" {
+variable "subnet" {
     type        = string
-    default     = "10.0.0.0/24"
-    description = "subnetwork to use"
+    default     = "10.110.21.0/24"
+    description = "subnet to use"
 }
 
 variable "lb_type" {
@@ -45,7 +46,7 @@ variable "lb_type" {
 
 variable "internalbalancerip" {
     type        = string
-    default     = "10.0.0.2"
+    default     = "10.110.21.2"
     description = "IP to use for control plane load balancer"
 }
 
@@ -63,18 +64,19 @@ variable "rke2_cluster_secret" {
 variable "extra_ssh_keys" {
     type        = list(string)
     default     = []
-    description = "extra SSH keys to inject into Rancher instances"
+    description = "extra SSH keys to inject into servers"
 }
 
 variable "master_type" {
     type        = string
     default     = "cx21"
-    description = "machine type to use for the masters"
+    description = "machine type to use for the master servers"
 }
 
 variable "master_count" {
+    type        = number
     default     = 3
-    description = "count of RKE2 master servers"
+    description = "count of the master servers"
 }
 
 variable "agent_type" {
@@ -84,6 +86,13 @@ variable "agent_type" {
 }
 
 variable "agent_count" {
-    default     = 3
-    description = "count of RKE2 agent servers"
+    type        = number
+    default     = 0
+    description = "count of the agent servers"
+}
+
+variable "image" {
+    type = string
+    default = "ubuntu-22.04"
+    description = "image to use for the servers"
 }

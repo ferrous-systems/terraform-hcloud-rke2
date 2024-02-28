@@ -1,29 +1,29 @@
-resource "hcloud_network" "clustername" {
-    name     = var.clustername
+resource "hcloud_network" "private" {
+    name     = "${var.clustername}-private"
     ip_range = var.network
 }
 
-resource "hcloud_network_subnet" "clustername" {
-    network_id   = hcloud_network.clustername.id
+resource "hcloud_network_subnet" "cluster" {
+    network_id   = hcloud_network.private.id
     type         = "cloud"
     network_zone = var.networkzone
-    ip_range     = var.subnetwork
+    ip_range     = var.subnet
 }
 
-resource "hcloud_load_balancer" "clustername_controlplane" {
-    name               = "clustername_controlplane"
+resource "hcloud_load_balancer" "cluster" {
+    name               = "${var.clustername}-cluster"
     load_balancer_type = var.lb_type
     network_zone       = var.networkzone
 }
 
-resource "hcloud_load_balancer_network" "clustername" {
-    load_balancer_id = hcloud_load_balancer.clustername_controlplane.id
-    network_id       = hcloud_network.clustername.id
+resource "hcloud_load_balancer_network" "cluster" {
+    load_balancer_id = hcloud_load_balancer.cluster.id
+    subnet_id        = hcloud_network_subnet.cluster.id
     ip               = var.internalbalancerip
 }
 
-resource "hcloud_load_balancer_service" "clustername_joiner" {
-    load_balancer_id = hcloud_load_balancer.clustername_controlplane.id
+resource "hcloud_load_balancer_service" "cluster_control" {
+    load_balancer_id = hcloud_load_balancer.cluster.id
     protocol         = "tcp"
     listen_port      = 9345
     destination_port = 9345
@@ -36,8 +36,8 @@ resource "hcloud_load_balancer_service" "clustername_joiner" {
     }
 }
 
-resource "hcloud_load_balancer_service" "clustername_kublet" {
-    load_balancer_id = hcloud_load_balancer.clustername_controlplane.id
+resource "hcloud_load_balancer_service" "cluster_api" {
+    load_balancer_id = hcloud_load_balancer.cluster.id
     protocol         = "tcp"
     listen_port      = 6443
     destination_port = 6443
@@ -50,12 +50,12 @@ resource "hcloud_load_balancer_service" "clustername_kublet" {
     }
 }
 
-resource "hcloud_load_balancer_target" "clustername_controlplane" {
+resource "hcloud_load_balancer_target" "cluster" {
     type             = "label_selector"
-    load_balancer_id = hcloud_load_balancer.clustername_controlplane.id
+    load_balancer_id = hcloud_load_balancer.cluster.id
     label_selector   = "cluster=${var.clustername},master=true"
     use_private_ip   = true
-    depends_on       = [hcloud_load_balancer_network.clustername]
+    depends_on       = [hcloud_load_balancer_network.cluster]
 }
 
 resource "hcloud_ssh_key" "root" {
@@ -67,7 +67,7 @@ resource "hcloud_server" "master" {
     count       = var.master_count
     name        = "${var.clustername}-master-${count.index}"
     location    = var.location
-    image       = "ubuntu-22.04"
+    image       = var.image
     server_type = var.master_type
     labels      = {
         cluster : var.clustername,
@@ -75,32 +75,32 @@ resource "hcloud_server" "master" {
     }
     backups   = true
     ssh_keys  = [hcloud_ssh_key.root.name]
-    user_data = templatefile("${path.module}/server_userdata.tmpl", {
+    user_data = templatefile("${path.module}/master_userdata.tftpl", {
         extra_ssh_keys      = var.extra_ssh_keys,
         rke2_cluster_secret = var.rke2_cluster_secret,
-        lb_address          = hcloud_load_balancer_network.clustername.ip,
-        lb_external_v4      = hcloud_load_balancer.clustername_controlplane.ipv4,
-        lb_external_v6      = hcloud_load_balancer.clustername_controlplane.ipv6,
+        lb_address          = hcloud_load_balancer_network.cluster.ip,
+        lb_external_v4      = hcloud_load_balancer.cluster.ipv4,
+        lb_external_v6      = hcloud_load_balancer.cluster.ipv6,
         master_index        = count.index,
         rke2_version        = var.rke2_version,
         domains             = var.domains,
         clustername         = var.clustername,
-        lb_id               = hcloud_load_balancer_network.clustername.id,
+        lb_id               = hcloud_load_balancer_network.cluster.id,
         api_token           = var.hcloud_token
     })
 }
 
 resource "hcloud_server_network" "master" {
-    count      = var.master_count
-    server_id  = hcloud_server.master[count.index].id
-    network_id = hcloud_network.clustername.id
+    count     = var.master_count
+    server_id = hcloud_server.master[count.index].id
+    subnet_id = hcloud_network_subnet.cluster.id
 }
 
 resource "hcloud_server" "agent" {
     count       = var.agent_count
     name        = "${var.clustername}-agent-${count.index}"
     location    = var.location
-    image       = "ubuntu-22.04"
+    image       = var.image
     server_type = var.agent_type
     labels      = {
         cluster : var.clustername,
@@ -108,20 +108,20 @@ resource "hcloud_server" "agent" {
     }
     backups   = true
     ssh_keys  = [hcloud_ssh_key.root.name]
-    user_data = templatefile("${path.module}/agent_userdata.tmpl", {
+    user_data = templatefile("${path.module}/agent_userdata.tftpl", {
         extra_ssh_keys      = var.extra_ssh_keys,
         rke2_cluster_secret = var.rke2_cluster_secret,
-        lb_address          = hcloud_load_balancer_network.clustername.ip,
+        lb_address          = hcloud_load_balancer_network.cluster.ip,
         agent_index         = count.index,
         rke2_version        = var.rke2_version
         clustername         = var.clustername,
-        lb_id               = hcloud_load_balancer_network.clustername.id,
+        lb_id               = hcloud_load_balancer_network.cluster.id,
         api_token           = var.hcloud_token
     })
 }
 
 resource "hcloud_server_network" "agent" {
-    count      = var.agent_count
-    server_id  = hcloud_server.agent[count.index].id
-    network_id = hcloud_network.clustername.id
+    count     = var.agent_count
+    server_id = hcloud_server.agent[count.index].id
+    subnet_id = hcloud_network_subnet.cluster.id
 }

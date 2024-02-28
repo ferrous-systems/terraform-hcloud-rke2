@@ -1,9 +1,9 @@
 output "lb_ipv4" {
-    value = hcloud_load_balancer.clustername_controlplane.ipv4
+    value = hcloud_load_balancer.cluster.ipv4
 }
 
 output "lb_ipv6" {
-    value = hcloud_load_balancer.clustername_controlplane.ipv6
+    value = hcloud_load_balancer.cluster.ipv6
 }
 
 output "master_ipv4s" {

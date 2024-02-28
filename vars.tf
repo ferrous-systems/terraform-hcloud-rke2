@@ -1,3 +1,9 @@
+variable "hcloud_token" {
+    type        = string
+    sensitive   = true
+    description = "Hetzner Cloud API token"
+}
+
 variable "domain" {
     type        = string
     description = "domain of the cluster"
@@ -11,9 +17,4 @@ variable "rke2_cluster_secret" {
 variable "clustername" {
     type        = string
     description = "name of the cluster"
-}
-
-variable "hcloud_token" {
-    type = string
-    description = "Hetzner Cloud API token"
 }
