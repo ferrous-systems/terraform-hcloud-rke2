@@ -22,7 +22,7 @@ resource "hcloud_load_balancer_network" "cluster" {
     ip               = var.internalbalancerip
 }
 
-resource "hcloud_load_balancer_service" "cluster_control" {
+resource "hcloud_load_balancer_service" "supervisor" {
     load_balancer_id = hcloud_load_balancer.cluster.id
     protocol         = "tcp"
     listen_port      = 9345
@@ -36,7 +36,7 @@ resource "hcloud_load_balancer_service" "cluster_control" {
     }
 }
 
-resource "hcloud_load_balancer_service" "cluster_api" {
+resource "hcloud_load_balancer_service" "k8s_api" {
     load_balancer_id = hcloud_load_balancer.cluster.id
     protocol         = "tcp"
     listen_port      = 6443

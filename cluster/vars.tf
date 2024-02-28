@@ -46,7 +46,7 @@ variable "lb_type" {
 
 variable "internalbalancerip" {
     type        = string
-    default     = "10.110.21.2"
+    default     = "10.110.21.1"
     description = "IP to use for control plane load balancer"
 }
 
@@ -92,7 +92,7 @@ variable "agent_count" {
 }
 
 variable "image" {
-    type = string
-    default = "ubuntu-22.04"
+    type        = string
+    default     = "ubuntu-22.04"
     description = "image to use for the servers"
 }
