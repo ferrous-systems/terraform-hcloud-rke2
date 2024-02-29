@@ -5,16 +5,6 @@ ssh_authorized_keys:
 - ${ssh_key}
 %{ endfor }
 %{ endif }
-runcmd:
-- apt-get update
-- apt-get install -y iptables git telnet vim software-properties-common resolvconf linux-headers-$(uname -r) jq curl open-iscsi
-- echo "nameserver 1.1.1.1" > /etc/resolvconf/resolv.conf.d/tail
-- echo "RateLimitIntervalSec=0" >> /etc/systemd/journald.conf
-- echo "RateLimitBurst=0" >> /etc/systemd/journald.conf
-- systemctl restart systemd-journald.service
-- systemctl start resolvconf
-- /opt/rke2/run_rke2.sh
-- rm /opt/rke2/run_rke2.sh
 write_files:
 - path: /etc/rancher/rke2/config.yaml
   permissions: "0600"
@@ -31,6 +21,34 @@ write_files:
       - ${domain}
      %{ endfor }
     token: ${rke2_cluster_secret}
+%{ if master_index == 0 }
+- path: /var/lib/rancher/rke2/server/manifests/hcloud-secret.yaml
+  permissions: "0600"
+  owner: root:root
+  content: |
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: hcloud
+      namespace: kube-system
+    stringData:
+      token: ${api_token}
+- path: /var/lib/rancher/rke2/server/manifests/hcloud-csi-helm.yaml
+  permissions: "0644"
+  owner: root:root
+  content: |
+    apiVersion: helm.cattle.io/v1
+    kind: HelmChart
+    metadata:
+      namespace: kube-system
+      name: hcloud-csi
+    spec:
+      targetNamespace: kube-system
+      createNamespace: false
+      version: 2.6.0
+      chart: hcloud-csi
+      repo: https://charts.hetzner.cloud
+%{ endif }
 - path: /opt/rke2/run_rke2.sh
   permissions: "0755"
   owner: root:root
@@ -58,4 +76,13 @@ write_files:
     INSTALL_RKE2_METHOD='tar' INSTALL_RKE2_TYPE=server INSTALL_RKE2_VERSION=${rke2_version} ./install.sh
     systemctl enable rke2-server
     systemctl start rke2-server
-
+runcmd:
+- apt-get update
+- apt-get install -y iptables git telnet vim software-properties-common resolvconf linux-headers-$(uname -r) jq curl open-iscsi
+- echo "nameserver 1.1.1.1" > /etc/resolvconf/resolv.conf.d/tail
+- echo "RateLimitIntervalSec=0" >> /etc/systemd/journald.conf
+- echo "RateLimitBurst=0" >> /etc/systemd/journald.conf
+- systemctl restart systemd-journald.service
+- systemctl start resolvconf
+- /opt/rke2/run_rke2.sh
+- rm /opt/rke2/run_rke2.sh
