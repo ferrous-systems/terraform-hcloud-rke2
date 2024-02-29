@@ -6,18 +6,25 @@ output "lb_ipv6" {
     value = hcloud_load_balancer.cluster.ipv6
 }
 
-output "master_ipv4s" {
-    value = hcloud_server.master.*.ipv4_address
+output "master" {
+    value = {
+        for server in hcloud_server.master : server.name => {
+            ipv4_address = server.ipv4_address
+            ipv6_address = server.ipv6_address
+        }
+    }
 }
 
-output "master_ipv6s" {
-    value = hcloud_server.master.*.ipv6_address
+output "agent" {
+    value = {
+        for server in hcloud_server.agent : server.name => {
+            ipv4_address = server.ipv4_address
+            ipv6_address = server.ipv6_address
+        }
+    }
 }
 
-output "agent_ipv4s" {
-    value = hcloud_server.agent.*.ipv4_address
-}
-
-output "agent_ipv6s" {
-    value = hcloud_server.agent.*.ipv6_address
-}
+#output "kubeconfig" {
+#    value = replace(data.remote_file.kubeconfig.content,
+#        "https://127.0.0.1:6443", "https://${local.fqdn}:6443")
+#}

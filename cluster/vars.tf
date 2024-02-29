@@ -1,29 +1,23 @@
-variable "hcloud_token" {
+variable "domain" {
     type        = string
-    sensitive   = true
-    description = "Hetzner Cloud API token"
+    description = "domain of the cluster"
 }
 
-variable "clustername" {
+variable "cluster_name" {
     type        = string
     description = "name of the cluster"
 }
 
-variable "domains" {
-    type        = list(string)
-    description = "list of cluster domains"
+variable "network_zone" {
+    type        = string
+    default     = "eu-central"
+    description = "Hetzner network zone"
 }
 
 variable "location" {
     type        = string
     default     = "nbg1"
     description = "Hetzner location"
-}
-
-variable "networkzone" {
-    type        = string
-    default     = "eu-central"
-    description = "Hetzner network zone"
 }
 
 variable "network" {
@@ -34,7 +28,7 @@ variable "network" {
 
 variable "subnet" {
     type        = string
-    default     = "10.110.21.0/24"
+    default     = "10.110.0.0/16"
     description = "subnet to use"
 }
 
@@ -44,9 +38,9 @@ variable "lb_type" {
     description = "load balancer type"
 }
 
-variable "internalbalancerip" {
+variable "lb_ip" {
     type        = string
-    default     = "10.110.21.1"
+    default     = "10.110.0.1"
     description = "IP to use for control plane load balancer"
 }
 
@@ -54,17 +48,6 @@ variable "rke2_version" {
     type        = string
     default     = ""
     description = "version of RKE2 to install"
-}
-
-variable "rke2_cluster_secret" {
-    type        = string
-    description = "cluster secret for RKE2 cluster registration"
-}
-
-variable "extra_ssh_keys" {
-    type        = list(string)
-    default     = []
-    description = "extra SSH keys to inject into servers"
 }
 
 variable "master_type" {

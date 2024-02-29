@@ -6,18 +6,14 @@ output "lb_ipv6" {
     value = module.cluster.lb_ipv6
 }
 
-output "master_ipv4s" {
-    value = module.cluster.master_ipv4s
+output "master" {
+    value = module.cluster.master
 }
 
-output "master_ipv6s" {
-    value = module.cluster.master_ipv6s
+output "agent" {
+    value = module.cluster.agent
 }
 
-output "agent_ipv4s" {
-    value = module.cluster.agent_ipv4s
-}
-
-output "agent_ipv6s" {
-    value = module.cluster.agent_ipv6s
-}
+#output "kubeconfig" {
+#    value = module.cluster.kubeconfig
+#}

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hcloud
+  namespace: kube-system
+stringData:
+  token: ${api_token}
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  namespace: kube-system
+  name: hcloud-csi
+spec:
+  targetNamespace: kube-system
+  createNamespace: false
+  version: 2.6.0
+  chart: hcloud-csi
+  repo: https://charts.hetzner.cloud
