@@ -52,19 +52,13 @@ variable "rke2_version" {
 
 variable "master_type" {
     type        = string
-    default     = "cx21"
+    default     = "cax11"
     description = "machine type to use for the master servers"
-}
-
-variable "master_count" {
-    type        = number
-    default     = 3
-    description = "count of the master servers"
 }
 
 variable "agent_type" {
     type        = string
-    default     = "cx21"
+    default     = "cax11"
     description = "machine type to use for the agents"
 }
 

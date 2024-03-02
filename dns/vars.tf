@@ -17,11 +17,3 @@ variable "lb_ipv6" {
     type        = string
     description = "IPv6 address of the load balancer"
 }
-
-variable "server" {
-    type = map(object({
-        ipv4_address = string
-        ipv6_address = string
-    }))
-    description = "nodes of the cluster"
-}

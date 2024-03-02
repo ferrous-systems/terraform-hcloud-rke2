@@ -1,3 +1,7 @@
+output "lb_fqdn" {
+    value = module.cluster.lb_fqdn
+}
+
 output "lb_ipv4" {
     value = module.cluster.lb_ipv4
 }
@@ -13,7 +17,3 @@ output "master" {
 output "agent" {
     value = module.cluster.agent
 }
-
-#output "kubeconfig" {
-#    value = module.cluster.kubeconfig
-#}

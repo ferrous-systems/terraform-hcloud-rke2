@@ -18,3 +18,26 @@ provider "hcloud" {
 provider "hetznerdns" {
     apitoken = var.hdns_token
 }
+
+locals {
+    cluster_api_url = "https://${module.cluster.lb_ipv4}:6443"
+    cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
+    client_certificate = base64decode(module.cluster.client_certificate)
+    client_key = base64decode(module.cluster.client_key)
+}
+
+provider "kubernetes" {
+    host                   = local.cluster_api_url
+    cluster_ca_certificate = local.cluster_ca_certificate
+    client_certificate     = local.client_certificate
+    client_key             = local.client_key
+}
+
+provider "helm" {
+    kubernetes {
+        host                   = local.cluster_api_url
+        cluster_ca_certificate = local.cluster_ca_certificate
+        client_certificate     = local.client_certificate
+        client_key             = local.client_key
+    }
+}

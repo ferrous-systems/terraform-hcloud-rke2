@@ -13,5 +13,10 @@ module "dns" {
     cluster_name = var.cluster_name
     lb_ipv4      = module.cluster.lb_ipv4
     lb_ipv6      = module.cluster.lb_ipv6
-    server       = merge(module.cluster.master, module.cluster.agent)
+}
+
+module "hcloud" {
+    source       = "./hcloud"
+    hcloud_token = var.hcloud_token
+    network      = module.cluster.network
 }

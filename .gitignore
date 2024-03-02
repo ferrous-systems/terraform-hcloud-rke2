@@ -5,7 +5,9 @@
 .classpath
 .DS_Store
 .project
-.terraform.lock.hcl
+.terraform.*
 *.iml
 *.tfvars
-terraform.tfstate*
+config-*.yaml
+id_rsa_*
+terraform.*
