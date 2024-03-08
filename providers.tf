@@ -20,10 +20,10 @@ provider "hetznerdns" {
 }
 
 locals {
-    cluster_api_url = "https://${module.cluster.lb_ipv4}:6443"
+    cluster_api_url        = "https://${module.cluster.lb_ipv4}:6443"
     cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
-    client_certificate = base64decode(module.cluster.client_certificate)
-    client_key = base64decode(module.cluster.client_key)
+    client_certificate     = base64decode(module.cluster.client_certificate)
+    client_key             = base64decode(module.cluster.client_key)
 }
 
 provider "kubernetes" {

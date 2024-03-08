@@ -5,7 +5,7 @@ variable "hcloud_token" {
 }
 
 variable "network" {
-    type    = string
+    type        = string
     description = "private cluster network name"
 }
 

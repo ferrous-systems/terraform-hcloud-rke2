@@ -20,3 +20,7 @@ module "hcloud" {
     hcloud_token = var.hcloud_token
     network      = module.cluster.network
 }
+
+module "addons" {
+    source = "./addons"
+}
