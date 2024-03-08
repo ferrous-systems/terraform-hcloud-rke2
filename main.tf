@@ -22,5 +22,6 @@ module "hcloud" {
 }
 
 module "addons" {
-    source = "./addons"
+    source     = "./addons"
+    acme_email = var.acme_email
 }

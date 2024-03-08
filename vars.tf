@@ -37,3 +37,8 @@ variable "agent_count" {
     default     = 0
     description = "count of the agent servers"
 }
+
+variable "acme_email" {
+    type    = string
+    default = "Let's Encrypt ACME registration e-mail"
+}
