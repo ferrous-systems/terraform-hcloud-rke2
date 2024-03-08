@@ -189,6 +189,17 @@ resource "hcloud_server" "agent" {
         network_id = hcloud_network.cluster.id
         alias_ips  = []
     }
+    provisioner "remote-exec" {
+        inline = [
+            "cloud-init status --wait | grep status:"
+        ]
+        connection {
+            type        = "ssh"
+            host        = self.ipv4_address
+            user        = "root"
+            private_key = tls_private_key.root.private_key_openssh
+        }
+    }
     lifecycle {
         create_before_destroy = true
         replace_triggered_by  = [random_string.agent[count.index]]

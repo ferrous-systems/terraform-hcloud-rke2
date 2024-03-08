@@ -11,6 +11,7 @@ EOF
 
 umask 0022
 curl -sSfL https://get.rke2.io/ | INSTALL_RKE2_METHOD=tar INSTALL_RKE2_TYPE=agent INSTALL_RKE2_VERSION="${rke2_version}" sh -
+systemctl enable rke2-agent.service
 
 for ((i = 0; i < 30; i++)); do
     curl -ksfL -u 'node:${cluster_token}' \
@@ -20,5 +21,4 @@ done
 
 sleep 30
 
-systemctl enable rke2-agent.service
 systemctl start rke2-agent.service || true
