@@ -10,7 +10,7 @@ resource "kubernetes_namespace" "headlamp" {
 resource "helm_release" "headlamp" {
     depends_on = [
         kubernetes_namespace.headlamp,
-        kubernetes_manifest.cluster_issuer
+        kubernetes_manifest.lets_encrypt
     ]
     namespace  = "headlamp"
     name       = "headlamp"
