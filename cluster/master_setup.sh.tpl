@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 SUPERVISOR_URL=https://${lb_ip}:9345
+NODE_IP=`ip route get ${lb_ip} | sed -n '/src/{s/.*src *\([^ ]*\).*/\1/p;q}'`
 
 umask 0077
 mkdir -p /etc/rancher/rke2
@@ -11,6 +12,7 @@ cat <<EOF >/etc/rancher/rke2/config.yaml
 server: $SUPERVISOR_URL
 %{ endif }
 token: "${cluster_token}"
+node-ip: $NODE_IP
 cloud-provider-name: external
 tls-san:
   - ${fqdn}
@@ -41,8 +43,7 @@ curl -sSfL https://get.rke2.io/ | INSTALL_RKE2_METHOD=tar INSTALL_RKE2_TYPE=serv
 systemctl enable rke2-server.service
 %{ if !initial }
 for ((i = 0; i < 30; i++)); do
-    curl -ksfL -u 'node:${cluster_token}' \
-        $SUPERVISOR_URL/v1-rke2/readyz >/dev/null 2>&1 && break
+    curl -ksSfL -u 'node:${cluster_token}' $SUPERVISOR_URL/v1-rke2/readyz && break
     sleep 10
 done
 
