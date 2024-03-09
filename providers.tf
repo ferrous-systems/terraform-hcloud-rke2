@@ -8,6 +8,10 @@ terraform {
             source  = "timohirt/hetznerdns"
             version = ">= 2.2.0"
         }
+        kubectl = {
+            source  = "gavinbunney/kubectl"
+            version = ">= 1.14.0"
+        }
     }
 }
 
@@ -27,6 +31,13 @@ locals {
 }
 
 provider "kubernetes" {
+    host                   = local.cluster_api_url
+    cluster_ca_certificate = local.cluster_ca_certificate
+    client_certificate     = local.client_certificate
+    client_key             = local.client_key
+}
+
+provider "kubectl" {
     host                   = local.cluster_api_url
     cluster_ca_certificate = local.cluster_ca_certificate
     client_certificate     = local.client_certificate

@@ -26,7 +26,7 @@ resource "helm_release" "hcloud-ccm" {
 }
 
 resource "helm_release" "hcloud-csi" {
-    depends_on = [kubernetes_secret.hcloud]
+    depends_on = [helm_release.hcloud-ccm]
     namespace  = "kube-system"
     name       = "hcloud-csi"
     repository = "https://charts.hetzner.cloud"
