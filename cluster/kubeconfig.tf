@@ -28,12 +28,13 @@ resource "local_file" "kubeconfig" {
     contexts:
     - context:
         cluster: ${var.cluster_name}
-        user: ${var.cluster_name}-admin
-      name: ${var.cluster_name}
-    current-context: ${var.cluster_name}
+        namespace: kube-system
+        user: ${var.cluster_name}-system:admin
+      name: ${var.cluster_name}-system:admin
+    current-context: ${var.cluster_name}-system:admin
     preferences: {}
     users:
-    - name: ${var.cluster_name}-admin
+    - name: ${var.cluster_name}-system:admin
       user:
         client-certificate-data: ${local.client_certificate}
         client-key-data: ${local.client_key}
