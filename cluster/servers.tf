@@ -3,7 +3,8 @@ resource "random_string" "token" {
 }
 
 locals {
-    fqdn = "api.${var.cluster_name}.${var.domain}"
+    fqdn = "${var.cluster_name}.${var.domain}"
+    api  = "api.${local.fqdn}"
 }
 
 resource "random_string" "master" {
@@ -25,7 +26,7 @@ resource "hcloud_server" "master0" {
         rke2_version  = var.rke2_version
         cluster_token = random_string.token.id
         initial       = !local.lb_deployed
-        fqdn          = local.fqdn
+        fqdn          = local.api
         lb_ip         = hcloud_load_balancer_network.cluster.ip
         lb_ext_v4     = hcloud_load_balancer.cluster.ipv4
         lb_ext_v6     = hcloud_load_balancer.cluster.ipv6
@@ -74,7 +75,7 @@ resource "hcloud_server" "master1" {
         rke2_version  = var.rke2_version
         cluster_token = random_string.token.id
         initial       = false
-        fqdn          = local.fqdn
+        fqdn          = local.api
         lb_ip         = hcloud_load_balancer_network.cluster.ip
         lb_ext_v4     = hcloud_load_balancer.cluster.ipv4
         lb_ext_v6     = hcloud_load_balancer.cluster.ipv6
@@ -123,7 +124,7 @@ resource "hcloud_server" "master2" {
         rke2_version  = var.rke2_version
         cluster_token = random_string.token.id
         initial       = false
-        fqdn          = local.fqdn
+        fqdn          = local.api
         lb_ip         = hcloud_load_balancer_network.cluster.ip
         lb_ext_v4     = hcloud_load_balancer.cluster.ipv4
         lb_ext_v6     = hcloud_load_balancer.cluster.ipv6

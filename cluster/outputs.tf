@@ -2,8 +2,12 @@ output "network" {
     value = hcloud_network.cluster.name
 }
 
-output "lb_fqdn" {
+output "fqdn" {
     value = local.fqdn
+}
+
+output "api_url" {
+    value = local.api_url
 }
 
 output "lb_ipv4" {

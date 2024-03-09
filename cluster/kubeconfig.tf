@@ -8,6 +8,7 @@ data "remote_file" "kubeconfig" {
 }
 
 locals {
+    api_url                = "https://${local.api}:6443"
     kubeconfig             = yamldecode(data.remote_file.kubeconfig.content)
     cluster_ca_certificate = local.kubeconfig.clusters[0].cluster.certificate-authority-data
     client_certificate     = local.kubeconfig.users[0].user.client-certificate-data
@@ -23,7 +24,7 @@ resource "local_file" "kubeconfig" {
     clusters:
     - cluster:
         certificate-authority-data: ${local.cluster_ca_certificate}
-        server: https://${local.fqdn}:6443
+        server: ${local.api_url}
       name: ${var.cluster_name}
     contexts:
     - context:

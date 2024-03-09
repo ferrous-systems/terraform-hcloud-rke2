@@ -1,5 +1,5 @@
-output "lb_fqdn" {
-    value = module.cluster.lb_fqdn
+output "api_url" {
+    value = module.cluster.api_url
 }
 
 output "lb_ipv4" {
