@@ -20,6 +20,11 @@ variable "longhorn_version" {
     description = "Longhorn Helm chart version"
 }
 
+variable "longhorn_user" {
+    type = string
+    description = "Longhorn UI user"
+}
+
 variable "headlamp_version" {
     type        = string
     default     = "0.19.0"

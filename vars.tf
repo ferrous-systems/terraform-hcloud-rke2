@@ -42,3 +42,9 @@ variable "acme_email" {
     type    = string
     default = "Let's Encrypt ACME registration e-mail"
 }
+
+variable "longhorn_user" {
+    type        = string
+    default     = "longhorn"
+    description = "Longhorn UI user"
+}

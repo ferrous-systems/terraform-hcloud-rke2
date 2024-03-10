@@ -22,7 +22,8 @@ module "hcloud" {
 }
 
 module "addons" {
-    source     = "./addons"
-    fqdn       = module.cluster.fqdn
-    acme_email = var.acme_email
+    source        = "./addons"
+    fqdn          = module.cluster.fqdn
+    acme_email    = var.acme_email
+    longhorn_user = var.longhorn_user
 }
