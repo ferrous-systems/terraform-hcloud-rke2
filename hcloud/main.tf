@@ -7,9 +7,6 @@ resource "kubernetes_secret" "hcloud" {
         token   = var.hcloud_token
         network = var.network
     }
-    lifecycle {
-        ignore_changes = [metadata[0].annotations]
-    }
 }
 
 resource "helm_release" "hcloud-ccm" {
@@ -19,10 +16,16 @@ resource "helm_release" "hcloud-ccm" {
     repository = "https://charts.hetzner.cloud"
     chart      = "hcloud-cloud-controller-manager"
     version    = var.hcloud_ccm_version
-    set {
-        name  = "networking.enabled"
-        value = true
-    }
+    values     = [
+        <<-EOT
+        networking:
+          enabled: true
+        EOT
+    ]
+}
+
+locals {
+    storage_class = "hcloud-volume"
 }
 
 resource "helm_release" "hcloud-csi" {
@@ -32,4 +35,12 @@ resource "helm_release" "hcloud-csi" {
     repository = "https://charts.hetzner.cloud"
     chart      = "hcloud-csi"
     version    = var.hcloud_csi_version
+    values     = [
+        <<-EOT
+        storageClasses:
+          - name: ${local.storage_class}
+            defaultStorageClass: true
+            reclaimPolicy: Delete
+        EOT
+    ]
 }

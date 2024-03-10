@@ -2,9 +2,6 @@ resource "kubernetes_namespace" "cert_manager" {
     metadata {
         name = "cert-manager"
     }
-    lifecycle {
-        ignore_changes = [metadata[0].annotations]
-    }
 }
 
 resource "helm_release" "cert_manager" {
@@ -14,8 +11,9 @@ resource "helm_release" "cert_manager" {
     repository = "https://charts.jetstack.io"
     chart      = "cert-manager"
     version    = var.cert_manager_version
-    set {
-        name  = "installCRDs"
-        value = "true"
-    }
+    values     = [
+        <<-EOT
+        installCRDs: true
+        EOT
+    ]
 }

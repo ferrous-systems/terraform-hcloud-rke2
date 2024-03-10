@@ -3,10 +3,18 @@ output "network" {
 }
 
 output "fqdn" {
+    depends_on = [
+        hcloud_load_balancer_service.k8s_api,
+        hcloud_server.master2
+    ]
     value = local.fqdn
 }
 
 output "api_url" {
+    depends_on = [
+        hcloud_load_balancer_service.k8s_api,
+        hcloud_server.master2
+    ]
     value = local.api_url
 }
 

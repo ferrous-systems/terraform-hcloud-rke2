@@ -2,9 +2,6 @@ resource "kubernetes_namespace" "headlamp" {
     metadata {
         name = "headlamp"
     }
-    lifecycle {
-        ignore_changes = [metadata[0].annotations]
-    }
 }
 
 resource "helm_release" "headlamp" {
