@@ -14,6 +14,12 @@ variable "acme_email" {
     default = "Let's Encrypt ACME registration e-mail"
 }
 
+variable "longhorn_version" {
+    type        = string
+    default     = "1.5.4"
+    description = "Longhorn Helm chart version"
+}
+
 variable "headlamp_version" {
     type        = string
     default     = "0.19.0"

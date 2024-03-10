@@ -5,11 +5,8 @@ resource "kubernetes_namespace" "headlamp" {
 }
 
 resource "helm_release" "headlamp" {
-    depends_on = [
-        kubernetes_namespace.headlamp,
-        kubectl_manifest.lets_encrypt
-    ]
-    namespace  = "headlamp"
+    depends_on = [kubectl_manifest.lets_encrypt]
+    namespace  = kubernetes_namespace.headlamp.metadata[0].name
     name       = "headlamp"
     repository = "https://headlamp-k8s.github.io/headlamp/"
     chart      = "headlamp"

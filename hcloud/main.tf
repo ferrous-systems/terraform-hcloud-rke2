@@ -24,10 +24,6 @@ resource "helm_release" "hcloud-ccm" {
     ]
 }
 
-locals {
-    storage_class = "hcloud-volume"
-}
-
 resource "helm_release" "hcloud-csi" {
     depends_on = [helm_release.hcloud-ccm]
     namespace  = "kube-system"
@@ -38,8 +34,8 @@ resource "helm_release" "hcloud-csi" {
     values     = [
         <<-EOT
         storageClasses:
-          - name: ${local.storage_class}
-            defaultStorageClass: true
+          - name: ${var.hcloud_storage_class}
+            defaultStorageClass: false
             reclaimPolicy: Delete
         EOT
     ]

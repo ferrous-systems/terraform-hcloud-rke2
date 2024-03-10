@@ -20,3 +20,9 @@ variable "hcloud_csi_version" {
     default     = "2.6.0"
     description = "Hetzner Cloud CSI driver version"
 }
+
+variable "hcloud_storage_class" {
+    type        = string
+    default     = "hcloud"
+    description = "storage class for Hetzner Cloud volumes"
+}
