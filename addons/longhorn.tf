@@ -27,6 +27,8 @@ resource "helm_release" "longhorn" {
     version    = var.longhorn_version
     values     = [
         <<-EOT
+        defaultSettings:
+          deletingConfirmationFlag: true
         longhornUI:
           replicas: 1
         ingress:
