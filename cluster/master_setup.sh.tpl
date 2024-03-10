@@ -15,7 +15,7 @@ token: "${cluster_token}"
 node-ip: $NODE_IP
 cloud-provider-name: external
 tls-san:
-  - ${fqdn}
+  - ${api}
   - ${lb_ip}
   - ${lb_ext_v4}
   - ${lb_ext_v6}
