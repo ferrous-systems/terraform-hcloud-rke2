@@ -29,6 +29,7 @@ resource "helm_release" "longhorn" {
         <<-EOT
         defaultSettings:
           deletingConfirmationFlag: true
+          allowCollectingLonghornUsageMetrics: false
         longhornUI:
           replicas: 1
         ingress:
