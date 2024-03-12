@@ -3,7 +3,7 @@ resource "hcloud_network" "cluster" {
     ip_range = var.network
 }
 
-resource "hcloud_network_subnet" "servers" {
+resource "hcloud_network_subnet" "nodes" {
     network_id   = hcloud_network.cluster.id
     type         = "cloud"
     network_zone = var.network_zone
@@ -21,7 +21,7 @@ resource "hcloud_load_balancer" "cluster" {
 
 resource "hcloud_load_balancer_network" "cluster" {
     load_balancer_id = hcloud_load_balancer.cluster.id
-    subnet_id        = hcloud_network_subnet.servers.id
+    subnet_id        = hcloud_network_subnet.nodes.id
     ip               = var.lb_ip
 }
 

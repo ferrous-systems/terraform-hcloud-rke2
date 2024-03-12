@@ -16,7 +16,7 @@ resource "random_string" "master" {
 }
 
 resource "hcloud_server" "master0" {
-    depends_on  = [hcloud_network_subnet.servers]
+    depends_on  = [hcloud_network_subnet.nodes]
     name        = "${var.cluster_name}-master-${random_string.master[0].id}"
     location    = var.location
     server_type = var.master_type
