@@ -1,4 +1,4 @@
-resource "random_string" "token" {
+resource "random_password" "token" {
     length  = 32
     special = false
 }
@@ -24,13 +24,13 @@ resource "hcloud_server" "master0" {
     backups     = false
     ssh_keys    = [hcloud_ssh_key.root.id]
     user_data   = templatefile("${path.module}/master_setup.sh.tpl", {
-        rke2_version  = var.rke2_version
-        cluster_token = random_string.token.id
-        initial       = !local.lb_deployed
-        api           = local.api
-        lb_ip         = hcloud_load_balancer_network.cluster.ip
-        lb_ext_v4     = hcloud_load_balancer.cluster.ipv4
-        lb_ext_v6     = hcloud_load_balancer.cluster.ipv6
+        rke2_version = var.rke2_version
+        token        = random_password.token.result
+        initial      = !local.lb_deployed
+        api          = local.api
+        lb_ip        = hcloud_load_balancer_network.cluster.ip
+        lb_ext_v4    = hcloud_load_balancer.cluster.ipv4
+        lb_ext_v6    = hcloud_load_balancer.cluster.ipv6
     })
     labels = {
         cluster = var.cluster_name
@@ -73,13 +73,13 @@ resource "hcloud_server" "master1" {
     backups     = false
     ssh_keys    = [hcloud_ssh_key.root.id]
     user_data   = templatefile("${path.module}/master_setup.sh.tpl", {
-        rke2_version  = var.rke2_version
-        cluster_token = random_string.token.id
-        initial       = false
-        api           = local.api
-        lb_ip         = hcloud_load_balancer_network.cluster.ip
-        lb_ext_v4     = hcloud_load_balancer.cluster.ipv4
-        lb_ext_v6     = hcloud_load_balancer.cluster.ipv6
+        rke2_version = var.rke2_version
+        token        = random_password.token.result
+        initial      = false
+        api          = local.api
+        lb_ip        = hcloud_load_balancer_network.cluster.ip
+        lb_ext_v4    = hcloud_load_balancer.cluster.ipv4
+        lb_ext_v6    = hcloud_load_balancer.cluster.ipv6
     })
     labels = {
         cluster = var.cluster_name
@@ -122,13 +122,13 @@ resource "hcloud_server" "master2" {
     backups     = false
     ssh_keys    = [hcloud_ssh_key.root.id]
     user_data   = templatefile("${path.module}/master_setup.sh.tpl", {
-        rke2_version  = var.rke2_version
-        cluster_token = random_string.token.id
-        initial       = false
-        api           = local.api
-        lb_ip         = hcloud_load_balancer_network.cluster.ip
-        lb_ext_v4     = hcloud_load_balancer.cluster.ipv4
-        lb_ext_v6     = hcloud_load_balancer.cluster.ipv6
+        rke2_version = var.rke2_version
+        token        = random_password.token.result
+        initial      = false
+        api          = local.api
+        lb_ip        = hcloud_load_balancer_network.cluster.ip
+        lb_ext_v4    = hcloud_load_balancer.cluster.ipv4
+        lb_ext_v6    = hcloud_load_balancer.cluster.ipv6
     })
     labels = {
         cluster = var.cluster_name
@@ -179,9 +179,9 @@ resource "hcloud_server" "agent" {
     backups     = false
     ssh_keys    = [hcloud_ssh_key.root.id]
     user_data   = templatefile("${path.module}/agent_setup.sh.tpl", {
-        rke2_version  = var.rke2_version
-        cluster_token = random_string.token.id
-        lb_ip         = hcloud_load_balancer_network.cluster.ip
+        rke2_version = var.rke2_version
+        token        = random_password.token.result
+        lb_ip        = hcloud_load_balancer_network.cluster.ip
     })
     labels = {
         cluster = var.cluster_name

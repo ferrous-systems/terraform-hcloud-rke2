@@ -42,7 +42,7 @@ resource "helm_release" "longhorn" {
             nginx.ingress.kubernetes.io/auth-type: basic
             nginx.ingress.kubernetes.io/auth-secret: ${kubernetes_secret.longhorn_auth.metadata[0].name}
             nginx.ingress.kubernetes.io/auth-secret-type: auth-map
-            nginx.ingress.kubernetes.io/auth-realm: 'Longhorn Authentication Required'
+            nginx.ingress.kubernetes.io/auth-realm: Longhorn
        EOT
     ]
 }

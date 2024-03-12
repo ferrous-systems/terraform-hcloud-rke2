@@ -11,7 +11,7 @@ cat <<EOF >/etc/rancher/rke2/config.yaml
 %{ else }
 server: $SUPERVISOR_URL
 %{ endif }
-token: "${cluster_token}"
+token: "${token}"
 node-ip: $NODE_IP
 cloud-provider-name: external
 tls-san:
@@ -43,7 +43,7 @@ curl -sSfL https://get.rke2.io/ | INSTALL_RKE2_METHOD=tar INSTALL_RKE2_TYPE=serv
 systemctl enable rke2-server.service
 %{ if !initial }
 for ((i = 0; i < 30; i++)); do
-    curl -ksSfL -u 'node:${cluster_token}' $SUPERVISOR_URL/v1-rke2/readyz && break
+    curl -ksSfL -u 'node:${token}' $SUPERVISOR_URL/v1-rke2/readyz && break
     sleep 10
 done
 
