@@ -7,7 +7,7 @@ variable "hcloud_token" {
 variable "hdns_token" {
     type        = string
     sensitive   = true
-    default     = null
+    default     = ""
     description = "Hetzner DNS API token"
 }
 

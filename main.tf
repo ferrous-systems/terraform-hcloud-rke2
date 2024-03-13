@@ -1,5 +1,10 @@
+locals {
+    setup_dns = var.hdns_token != ""
+}
+
 module "cluster" {
     source       = "./cluster"
+    use_dns      = local.setup_dns
     location     = var.location
     domain       = var.domain
     cluster_name = var.cluster_name
@@ -12,6 +17,7 @@ module "cluster" {
 
 module "dns" {
     source       = "./dns"
+    setup_dns    = local.setup_dns
     domain       = var.domain
     cluster_name = var.cluster_name
     lb_ipv4      = module.cluster.lb_ipv4

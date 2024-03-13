@@ -1,3 +1,8 @@
+variable "setup_dns" {
+    type        = bool
+    description = "set to true to add DNS records"
+}
+
 variable "domain" {
     type        = string
     description = "domain of the cluster"

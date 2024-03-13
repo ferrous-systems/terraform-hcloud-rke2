@@ -8,7 +8,7 @@ data "remote_file" "kubeconfig" {
 }
 
 locals {
-    api_url                = "https://${local.api}:6443"
+    api_url                = "https://${var.use_dns ? local.api : hcloud_load_balancer.cluster.ipv4}:6443"
     kubeconfig             = yamldecode(data.remote_file.kubeconfig.content)
     cluster_ca_certificate = local.kubeconfig.clusters[0].cluster.certificate-authority-data
     client_certificate     = local.kubeconfig.users[0].user.client-certificate-data
