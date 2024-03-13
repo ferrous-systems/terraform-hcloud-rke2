@@ -1,19 +1,23 @@
-resource "hcloud_network" "cluster" {
+data "hcloud_location" "cluster" {
+    name = var.location
+}
+
+resource "hcloud_network" "private" {
     name     = var.cluster_name
     ip_range = var.network
 }
 
-resource "hcloud_network_subnet" "nodes" {
-    network_id   = hcloud_network.cluster.id
+resource "hcloud_network_subnet" "cluster" {
+    network_id   = hcloud_network.private.id
     type         = "cloud"
-    network_zone = var.network_zone
+    network_zone = data.hcloud_location.cluster.network_zone
     ip_range     = var.subnet
 }
 
 resource "hcloud_load_balancer" "cluster" {
     name               = "${var.cluster_name}-cluster"
     load_balancer_type = var.lb_type
-    location           = var.location
+    location           = data.hcloud_location.cluster.name
     labels             = {
         cluster = var.cluster_name
     }
@@ -21,7 +25,7 @@ resource "hcloud_load_balancer" "cluster" {
 
 resource "hcloud_load_balancer_network" "cluster" {
     load_balancer_id = hcloud_load_balancer.cluster.id
-    subnet_id        = hcloud_network_subnet.nodes.id
+    subnet_id        = hcloud_network_subnet.cluster.id
     ip               = var.lb_ip
 }
 

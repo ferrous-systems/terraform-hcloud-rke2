@@ -1,5 +1,5 @@
 output "network" {
-    value = hcloud_network.cluster.name
+    value = hcloud_network.private.name
 }
 
 output "fqdn" {
@@ -69,5 +69,6 @@ output "client_certificate" {
 }
 
 output "client_key" {
-    value = local.client_key
+    value     = local.client_key
+    sensitive = true
 }

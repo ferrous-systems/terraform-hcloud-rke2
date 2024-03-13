@@ -8,12 +8,6 @@ variable "cluster_name" {
     description = "name of the cluster"
 }
 
-variable "network_zone" {
-    type        = string
-    default     = "eu-central"
-    description = "Hetzner network zone"
-}
-
 variable "location" {
     type        = string
     default     = "nbg1"
@@ -41,7 +35,7 @@ variable "lb_type" {
 variable "lb_ip" {
     type        = string
     default     = "10.110.0.1"
-    description = "IP to use for control plane load balancer"
+    description = "IP to use for the cluster load balancer"
 }
 
 variable "rke2_version" {

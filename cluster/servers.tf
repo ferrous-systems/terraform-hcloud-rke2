@@ -16,9 +16,9 @@ resource "random_string" "master" {
 }
 
 resource "hcloud_server" "master0" {
-    depends_on  = [hcloud_network_subnet.nodes]
+    depends_on  = [hcloud_network_subnet.cluster]
     name        = "${var.cluster_name}-master-${random_string.master[0].id}"
-    location    = var.location
+    location    = data.hcloud_location.cluster.name
     server_type = var.master_type
     image       = var.image
     backups     = false
@@ -37,7 +37,7 @@ resource "hcloud_server" "master0" {
         master  = "true"
     }
     network {
-        network_id = hcloud_network.cluster.id
+        network_id = hcloud_network.private.id
         alias_ips  = []
     }
     provisioner "remote-exec" {
@@ -66,7 +66,7 @@ resource "hcloud_server" "master0" {
 resource "hcloud_server" "master1" {
     depends_on  = [hcloud_server.master0]
     name        = "${var.cluster_name}-master-${random_string.master[1].id}"
-    location    = var.location
+    location    = data.hcloud_location.cluster.name
     server_type = var.master_type
     image       = var.image
     backups     = false
@@ -85,7 +85,7 @@ resource "hcloud_server" "master1" {
         master  = "true"
     }
     network {
-        network_id = hcloud_network.cluster.id
+        network_id = hcloud_network.private.id
         alias_ips  = []
     }
     provisioner "remote-exec" {
@@ -114,7 +114,7 @@ resource "hcloud_server" "master1" {
 resource "hcloud_server" "master2" {
     depends_on  = [hcloud_server.master1]
     name        = "${var.cluster_name}-master-${random_string.master[2].id}"
-    location    = var.location
+    location    = data.hcloud_location.cluster.name
     server_type = var.master_type
     image       = var.image
     backups     = false
@@ -133,7 +133,7 @@ resource "hcloud_server" "master2" {
         master  = "true"
     }
     network {
-        network_id = hcloud_network.cluster.id
+        network_id = hcloud_network.private.id
         alias_ips  = []
     }
     provisioner "remote-exec" {
@@ -170,7 +170,7 @@ resource "hcloud_server" "agent" {
     depends_on  = [hcloud_server.master2]
     count       = var.agent_count
     name        = "${var.cluster_name}-agent-${random_string.agent[count.index].id}"
-    location    = var.location
+    location    = data.hcloud_location.cluster.name
     server_type = var.agent_type
     image       = var.image
     backups     = false
@@ -185,7 +185,7 @@ resource "hcloud_server" "agent" {
         agent   = "true"
     }
     network {
-        network_id = hcloud_network.cluster.id
+        network_id = hcloud_network.private.id
         alias_ips  = []
     }
     provisioner "remote-exec" {
