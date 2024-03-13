@@ -7,13 +7,8 @@ variable "hcloud_token" {
 variable "hdns_token" {
     type        = string
     sensitive   = true
+    default     = null
     description = "Hetzner DNS API token"
-}
-
-variable "network_zone" {
-    type        = string
-    default     = "eu-central"
-    description = "Hetzner network zone"
 }
 
 variable "location" {
@@ -32,10 +27,34 @@ variable "cluster_name" {
     description = "name of the cluster"
 }
 
+variable "master_type" {
+    type        = string
+    default     = "cax11"
+    description = "machine type to use for the master servers"
+}
+
+variable "agent_type" {
+    type        = string
+    default     = "cax11"
+    description = "machine type to use for the agents"
+}
+
 variable "agent_count" {
     type        = number
     default     = 0
     description = "count of the agent servers"
+}
+
+variable "image" {
+    type        = string
+    default     = "ubuntu-22.04"
+    description = "image to use for the servers"
+}
+
+variable "rke2_version" {
+    type        = string
+    default     = ""
+    description = "version of RKE2 to install"
 }
 
 variable "acme_email" {

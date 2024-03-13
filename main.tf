@@ -1,10 +1,13 @@
 module "cluster" {
     source       = "./cluster"
-    network_zone = var.network_zone
     location     = var.location
     domain       = var.domain
     cluster_name = var.cluster_name
+    master_type  = var.master_type
+    agent_type   = var.agent_count
     agent_count  = var.agent_count
+    image        = var.image
+    rke2_version = var.rke2_version
 }
 
 module "dns" {

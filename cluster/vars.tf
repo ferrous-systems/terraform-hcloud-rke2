@@ -10,7 +10,6 @@ variable "cluster_name" {
 
 variable "location" {
     type        = string
-    default     = "nbg1"
     description = "Hetzner location"
 }
 
@@ -40,30 +39,25 @@ variable "lb_ip" {
 
 variable "rke2_version" {
     type        = string
-    default     = ""
     description = "version of RKE2 to install"
 }
 
 variable "master_type" {
     type        = string
-    default     = "cax11"
     description = "machine type to use for the master servers"
 }
 
 variable "agent_type" {
     type        = string
-    default     = "cax11"
     description = "machine type to use for the agents"
 }
 
 variable "agent_count" {
     type        = number
-    default     = 0
     description = "count of the agent servers"
 }
 
 variable "image" {
     type        = string
-    default     = "ubuntu-22.04"
     description = "image to use for the servers"
 }
