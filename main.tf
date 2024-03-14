@@ -25,9 +25,11 @@ module "dns" {
 }
 
 module "hcloud" {
-    source       = "./hcloud"
-    hcloud_token = var.hcloud_token
-    network      = module.cluster.network
+    source             = "./hcloud"
+    hcloud_token       = var.hcloud_token
+    network            = module.cluster.network
+    hcloud_ccm_version = var.hcloud_ccm_version
+    hcloud_csi_version = var.use_hcloud_storage ? var.hcloud_csi_version : null
 }
 
 module "addons" {

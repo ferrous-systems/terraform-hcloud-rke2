@@ -132,9 +132,9 @@ The configuration can deploy the following additional cluster services
 by setting their corresponding variable values to `true`.
 
 ```hcl
-use_hcloud_csi = true // use Hetzner Cloud CSI driver
-use_longhorn   = true // use Longhorn distributed block storage
-use_headlamp   = true // use Headlamp Kubernetes UI
+use_hcloud_storage = true // use Hetzner Cloud CSI driver
+use_longhorn       = true // use Longhorn distributed block storage
+use_headlamp       = true // use Headlamp Kubernetes UI
 ```
 
 If only Hetzner Cloud CSI driver is deployed, `hcloud` storage class

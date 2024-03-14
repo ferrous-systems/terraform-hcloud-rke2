@@ -57,9 +57,27 @@ variable "rke2_version" {
     description = "version of RKE2 to install"
 }
 
+variable "hcloud_ccm_version" {
+    type        = string
+    default     = "1.19.0"
+    description = "Cloud Controller Manager for Hetzner Cloud version"
+}
+
+variable "hcloud_csi_version" {
+    type        = string
+    default     = "2.6.0"
+    description = "Hetzner Cloud CSI driver version"
+}
+
+variable "use_hcloud_storage" {
+    type        = bool
+    default     = false
+    description = "deploy Hetzner Cloud CSI driver if true"
+}
+
 variable "acme_email" {
     type        = string
-    default     = ""
+    default     = null
     description = "Let's Encrypt ACME registration e-mail"
 }
 

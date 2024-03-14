@@ -1,5 +1,5 @@
 locals {
-    configure_issuer = var.acme_email != ""
+    configure_issuer = var.acme_email != null
 }
 
 resource "kubectl_manifest" "lets_encrypt" {

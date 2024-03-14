@@ -25,6 +25,7 @@ resource "helm_release" "hcloud-ccm" {
 }
 
 resource "helm_release" "hcloud-csi" {
+    count      = var.hcloud_csi_version != null ? 1 : 0
     depends_on = [helm_release.hcloud-ccm]
     namespace  = "kube-system"
     name       = "hcloud-csi"
