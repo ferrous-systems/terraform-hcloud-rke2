@@ -10,8 +10,12 @@ output "lb_ipv6" {
     value = module.cluster.lb_ipv6
 }
 
-output "node" {
-    value = module.cluster.node
+output "master" {
+    value = module.cluster.master
+}
+
+output "agent" {
+    value = module.cluster.agent
 }
 
 output "longhorn_password" {

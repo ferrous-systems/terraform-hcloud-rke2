@@ -34,8 +34,8 @@ output "lb_ipv6" {
     value = hcloud_load_balancer.cluster.ipv6
 }
 
-output "node" {
-    value = concat([
+output "master" {
+    value = [
         {
             name         = hcloud_server.master0.name
             ipv4_address = hcloud_server.master0.ipv4_address
@@ -51,13 +51,17 @@ output "node" {
             ipv4_address = hcloud_server.master2.ipv4_address
             ipv6_address = hcloud_server.master2.ipv6_address
         }
-    ], [
+    ]
+}
+
+output "agent" {
+    value = [
         for server in hcloud_server.agent : {
             name         = server.name
             ipv4_address = server.ipv4_address
             ipv6_address = server.ipv6_address
         }
-    ])
+    ]
 }
 
 output "cluster_ca_certificate" {
