@@ -38,4 +38,5 @@ module "addons" {
     fqdn             = module.cluster.fqdn
     acme_email       = var.acme_email
     longhorn_version = var.use_longhorn ? var.longhorn_version : null
+    headlamp_version = var.use_headlamp ? var.headlamp_version : null
 }

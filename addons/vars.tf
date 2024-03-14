@@ -27,6 +27,5 @@ variable "longhorn_user" {
 
 variable "headlamp_version" {
     type        = string
-    default     = "0.19.0"
     description = "Headlamp Helm chart version"
 }

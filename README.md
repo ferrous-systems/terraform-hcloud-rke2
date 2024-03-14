@@ -153,7 +153,7 @@ terraform output longhorn_password
 ```
 
 [Headlamp](https://headlamp.dev/) UI will be available at
-<https://longhorn.mycluster.mydomain.tld/>. You can get the
+<https://headlamp.mycluster.mydomain.tld/>. You can get the
 authentication token for it by running:
 
 ```shell

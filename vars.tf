@@ -75,6 +75,18 @@ variable "longhorn_version" {
     description = "Longhorn Helm chart version"
 }
 
+variable "headlamp_version" {
+    type        = string
+    default     = "0.19.0"
+    description = "Headlamp Helm chart version"
+}
+
+variable "acme_email" {
+    type        = string
+    default     = null
+    description = "Let's Encrypt ACME registration e-mail"
+}
+
 variable "use_hcloud_storage" {
     type        = bool
     default     = false
@@ -87,8 +99,8 @@ variable "use_longhorn" {
     description = "deploy Longhorn distributed block storage if true"
 }
 
-variable "acme_email" {
-    type        = string
-    default     = null
-    description = "Let's Encrypt ACME registration e-mail"
+variable "use_headlamp" {
+    type        = bool
+    default     = false
+    description = "deploy Headlamp Kubernetes UI if true"
 }
