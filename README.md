@@ -225,10 +225,10 @@ is destroyed. The procedure follows.
    Wait for the command to finish.
 3. Replace the name suffix.
    ```shell
-    terraform apply -replace 'random_string.agent[3]'
+   terraform apply -replace 'module.cluster.random_string.agent[3]'
    ```
-   This will replace the node as described above. For a master node use
-   `random_string.master`.
+   This will replace the node as described above. For master nodes use
+   `module.cluster.random_string.master` instances.
 
 ### Destroying the Cluster
 
