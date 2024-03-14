@@ -69,20 +69,26 @@ variable "hcloud_csi_version" {
     description = "Hetzner Cloud CSI driver version"
 }
 
+variable "longhorn_version" {
+    type        = string
+    default     = "1.5.4"
+    description = "Longhorn Helm chart version"
+}
+
 variable "use_hcloud_storage" {
     type        = bool
     default     = false
     description = "deploy Hetzner Cloud CSI driver if true"
 }
 
+variable "use_longhorn" {
+    type        = bool
+    default     = false
+    description = "deploy Longhorn distributed block storage if true"
+}
+
 variable "acme_email" {
     type        = string
     default     = null
     description = "Let's Encrypt ACME registration e-mail"
-}
-
-variable "longhorn_user" {
-    type        = string
-    default     = "longhorn"
-    description = "Longhorn UI user"
 }

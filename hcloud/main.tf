@@ -36,7 +36,7 @@ resource "helm_release" "hcloud-csi" {
         <<-EOT
         storageClasses:
           - name: ${var.hcloud_storage_class}
-            defaultStorageClass: false
+            defaultStorageClass: ${var.default_storage_class}
             reclaimPolicy: Delete
         EOT
     ]

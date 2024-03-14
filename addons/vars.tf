@@ -16,12 +16,12 @@ variable "acme_email" {
 
 variable "longhorn_version" {
     type        = string
-    default     = "1.5.4"
     description = "Longhorn Helm chart version"
 }
 
 variable "longhorn_user" {
-    type = string
+    type        = string
+    default     = "longhorn"
     description = "Longhorn UI user"
 }
 

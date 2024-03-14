@@ -24,3 +24,8 @@ variable "hcloud_storage_class" {
     default     = "hcloud"
     description = "storage class for Hetzner Cloud volumes"
 }
+
+variable "default_storage_class" {
+    type        = bool
+    description = "make Hetzner Cloud storage class default if true"
+}

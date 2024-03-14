@@ -25,16 +25,17 @@ module "dns" {
 }
 
 module "hcloud" {
-    source             = "./hcloud"
-    hcloud_token       = var.hcloud_token
-    network            = module.cluster.network
-    hcloud_ccm_version = var.hcloud_ccm_version
-    hcloud_csi_version = var.use_hcloud_storage ? var.hcloud_csi_version : null
+    source                = "./hcloud"
+    hcloud_token          = var.hcloud_token
+    network               = module.cluster.network
+    hcloud_ccm_version    = var.hcloud_ccm_version
+    hcloud_csi_version    = var.use_hcloud_storage ? var.hcloud_csi_version : null
+    default_storage_class = !var.use_longhorn
 }
 
 module "addons" {
-    source        = "./addons"
-    fqdn          = module.cluster.fqdn
-    acme_email    = var.acme_email
-    longhorn_user = var.longhorn_user
+    source           = "./addons"
+    fqdn             = module.cluster.fqdn
+    acme_email       = var.acme_email
+    longhorn_version = var.use_longhorn ? var.longhorn_version : null
 }

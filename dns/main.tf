@@ -5,7 +5,7 @@ data "hetznerdns_zone" "zone" {
 
 resource "hetznerdns_record" "wildcard_ipv4" {
     count   = var.setup_dns ? 1 : 0
-    zone_id = data.hetznerdns_zone.zone[0].id
+    zone_id = data.hetznerdns_zone.zone[count.index].id
     name    = "*.${var.cluster_name}"
     value   = var.lb_ipv4
     type    = "A"
@@ -14,7 +14,7 @@ resource "hetznerdns_record" "wildcard_ipv4" {
 
 resource "hetznerdns_record" "wildcard_ipv6" {
     count   = var.setup_dns ? 1 : 0
-    zone_id = data.hetznerdns_zone.zone[0].id
+    zone_id = data.hetznerdns_zone.zone[count.index].id
     name    = "*.${var.cluster_name}"
     value   = var.lb_ipv6
     type    = "AAAA"
