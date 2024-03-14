@@ -58,8 +58,9 @@ variable "rke2_version" {
 }
 
 variable "acme_email" {
-    type    = string
-    default = "Let's Encrypt ACME registration e-mail"
+    type        = string
+    default     = ""
+    description = "Let's Encrypt ACME registration e-mail"
 }
 
 variable "longhorn_user" {

@@ -18,6 +18,10 @@ resource "kubernetes_secret" "longhorn_auth" {
     }
 }
 
+locals {
+    longhorn_host = "longhorn.${var.fqdn}"
+}
+
 resource "helm_release" "longhorn" {
     depends_on = [kubectl_manifest.lets_encrypt]
     namespace  = kubernetes_namespace.longhorn.metadata[0].name
@@ -35,14 +39,18 @@ resource "helm_release" "longhorn" {
         ingress:
           enabled: true
           ingressClassName: nginx
-          host: longhorn.${var.fqdn}
-          tls: true
+          host: ${local.longhorn_host}
           annotations:
-            cert-manager.io/cluster-issuer: lets-encrypt
             nginx.ingress.kubernetes.io/auth-type: basic
             nginx.ingress.kubernetes.io/auth-secret: ${kubernetes_secret.longhorn_auth.metadata[0].name}
             nginx.ingress.kubernetes.io/auth-secret-type: auth-map
             nginx.ingress.kubernetes.io/auth-realm: Longhorn
-       EOT
+        EOT
+        , !local.configure_issuer ? "" : <<-EOT
+        ingress:
+          tls: true
+          annotations:
+            cert-manager.io/cluster-issuer: lets-encrypt
+        EOT
     ]
 }

@@ -4,6 +4,10 @@ resource "kubernetes_namespace" "headlamp" {
     }
 }
 
+locals {
+    headlamp_host = "headlamp.${var.fqdn}"
+}
+
 resource "helm_release" "headlamp" {
     depends_on = [kubectl_manifest.lets_encrypt]
     namespace  = kubernetes_namespace.headlamp.metadata[0].name
@@ -17,16 +21,20 @@ resource "helm_release" "headlamp" {
           enabled: true
           annotations:
             kubernetes.io/ingress.class: nginx
-            cert-manager.io/cluster-issuer: lets-encrypt
           hosts:
-            - host: headlamp.${var.fqdn}
+            - host: ${local.headlamp_host}
               paths:
                 - path: /
                   type: Prefix
+        EOT
+        , !local.configure_issuer ? "" : <<-EOT
+        ingress:
+          annotations:
+            cert-manager.io/cluster-issuer: lets-encrypt
           tls:
             - secretName: headlamp-tls
               hosts:
-                - headlamp.${var.fqdn}
+                - ${local.headlamp_host}
         EOT
     ]
 }
