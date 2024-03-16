@@ -38,6 +38,13 @@ module "csi" {
     default_storage_class = !var.use_longhorn
 }
 
+module "upgrade" {
+    source                            = "./modules/upgrade"
+    count                             = var.automated_upgrades ? 1 : 0
+    system_upgrade_controller_version = var.system_upgrade_controller_version
+    rke2_version                      = var.rke2_version
+}
+
 module "cert_manager" {
     source               = "./modules/cert_manager"
     cert_manager_version = var.cert_manager_version

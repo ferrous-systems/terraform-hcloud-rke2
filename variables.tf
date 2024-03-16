@@ -53,8 +53,8 @@ variable "image" {
 
 variable "rke2_version" {
     type        = string
-    default     = ""
-    description = "version of RKE2 to install"
+    default     = "v1.27.11+rke2r1"
+    description = "target version of RKE2"
 }
 
 variable "hcloud_ccm_version" {
@@ -67,6 +67,12 @@ variable "hcloud_csi_version" {
     type        = string
     default     = "2.6.0"
     description = "Hetzner Cloud CSI driver version"
+}
+
+variable "system_upgrade_controller_version" {
+    type        = string
+    default     = "0.13.4"
+    description = "version of the System Upgrade Controller"
 }
 
 variable "cert_manager_version" {
@@ -85,6 +91,12 @@ variable "headlamp_version" {
     type        = string
     default     = "0.19.0"
     description = "Headlamp Helm chart version"
+}
+
+variable "automated_upgrades" {
+    type        = bool
+    default     = false
+    description = "perform automated upgrades, only works with AMD64"
 }
 
 variable "acme_email" {
