@@ -1,17 +1,6 @@
-variable "hcloud_token" {
+variable "hcloud_secret" {
     type        = string
-    sensitive   = true
-    description = "Hetzner Cloud API token"
-}
-
-variable "network" {
-    type        = string
-    description = "private cluster network name"
-}
-
-variable "hcloud_ccm_version" {
-    type        = string
-    description = "Cloud Controller Manager for Hetzner Cloud version"
+    description = "name of the secret containing Hetzner Cloud API token"
 }
 
 variable "hcloud_csi_version" {

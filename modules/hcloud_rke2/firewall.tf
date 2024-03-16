@@ -1,7 +1,7 @@
 #resource "hcloud_firewall" "cluster" {
-#    name   = var.cluster_name
+#    name   = var.name
 #    labels = {
-#        cluster = var.cluster_name
+#        cluster = var.name
 #    }
 #    rule {
 #        direction  = "in"
@@ -10,6 +10,6 @@
 #        source_ips = ["0.0.0.0/0", "::/0"]
 #    }
 #    apply_to {
-#        label_selector = "cluster=${var.cluster_name}"
+#        label_selector = "cluster=${var.name}"
 #    }
 #}

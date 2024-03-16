@@ -1,5 +1,5 @@
 output "api_url" {
-    value = module.cluster.api_url
+    value = local.api_url
 }
 
 output "lb_ipv4" {
@@ -19,6 +19,6 @@ output "agent" {
 }
 
 output "longhorn_password" {
-    value     = module.addons.longhorn_password
+    value     = var.use_longhorn ? module.longhorn[0].password : null
     sensitive = true
 }

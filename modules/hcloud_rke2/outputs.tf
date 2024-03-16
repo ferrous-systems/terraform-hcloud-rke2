@@ -2,22 +2,6 @@ output "network" {
     value = hcloud_network.private.name
 }
 
-output "fqdn" {
-    depends_on = [
-        hcloud_load_balancer_service.k8s_api,
-        hcloud_server.master2
-    ]
-    value = local.fqdn
-}
-
-output "api_url" {
-    depends_on = [
-        hcloud_load_balancer_service.k8s_api,
-        hcloud_server.master2
-    ]
-    value = local.api_url
-}
-
 output "lb_ipv4" {
     depends_on = [
         hcloud_load_balancer_service.k8s_api,
@@ -32,6 +16,40 @@ output "lb_ipv6" {
         hcloud_server.master2
     ]
     value = hcloud_load_balancer.cluster.ipv6
+}
+
+output "fqdn" {
+    depends_on = [
+        hcloud_load_balancer_service.k8s_api,
+        hcloud_server.master2
+    ]
+    value = local.fqdn
+}
+
+output "api" {
+    depends_on = [
+        hcloud_load_balancer_service.k8s_api,
+        hcloud_server.master2
+    ]
+    value = local.api
+}
+
+output "cluster_ca_certificate" {
+    value = local.kubeconfig.clusters[0].cluster.certificate-authority-data
+}
+
+output "client_certificate" {
+    value = local.kubeconfig.users[0].user.client-certificate-data
+}
+
+output "client_key" {
+    value     = local.kubeconfig.users[0].user.client-key-data
+    sensitive = true
+}
+
+output "ssh_private_key" {
+    value     = tls_private_key.root.private_key_openssh
+    sensitive = true
 }
 
 output "master" {
@@ -62,17 +80,4 @@ output "agent" {
             ipv6_address = server.ipv6_address
         }
     ]
-}
-
-output "cluster_ca_certificate" {
-    value = local.cluster_ca_certificate
-}
-
-output "client_certificate" {
-    value = local.client_certificate
-}
-
-output "client_key" {
-    value     = local.client_key
-    sensitive = true
 }

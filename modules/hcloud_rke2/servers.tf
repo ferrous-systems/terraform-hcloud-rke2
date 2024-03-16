@@ -4,7 +4,7 @@ resource "random_password" "token" {
 }
 
 locals {
-    fqdn = "${var.cluster_name}.${var.domain}"
+    fqdn = "${var.name}.${var.domain}"
     api  = "api.${local.fqdn}"
 }
 
@@ -17,7 +17,7 @@ resource "random_string" "master" {
 
 resource "hcloud_server" "master0" {
     depends_on  = [hcloud_network_subnet.cluster]
-    name        = "${var.cluster_name}-master-${random_string.master[0].id}"
+    name        = "${var.name}-master-${random_string.master[0].id}"
     location    = data.hcloud_location.cluster.name
     server_type = var.master_type
     image       = var.image
@@ -33,7 +33,7 @@ resource "hcloud_server" "master0" {
         lb_ext_v6    = hcloud_load_balancer.cluster.ipv6
     })
     labels = {
-        cluster = var.cluster_name
+        cluster = var.name
         master  = "true"
     }
     network {
@@ -63,9 +63,22 @@ resource "hcloud_server" "master0" {
     }
 }
 
+data "remote_file" "kubeconfig" {
+    path = "/etc/rancher/rke2/rke2.yaml"
+    conn {
+        host        = hcloud_server.master0.ipv4_address
+        user        = "root"
+        private_key = tls_private_key.root.private_key_openssh
+    }
+}
+
+locals {
+    kubeconfig = yamldecode(data.remote_file.kubeconfig.content)
+}
+
 resource "hcloud_server" "master1" {
     depends_on  = [hcloud_server.master0]
-    name        = "${var.cluster_name}-master-${random_string.master[1].id}"
+    name        = "${var.name}-master-${random_string.master[1].id}"
     location    = data.hcloud_location.cluster.name
     server_type = var.master_type
     image       = var.image
@@ -81,7 +94,7 @@ resource "hcloud_server" "master1" {
         lb_ext_v6    = hcloud_load_balancer.cluster.ipv6
     })
     labels = {
-        cluster = var.cluster_name
+        cluster = var.name
         master  = "true"
     }
     network {
@@ -113,7 +126,7 @@ resource "hcloud_server" "master1" {
 
 resource "hcloud_server" "master2" {
     depends_on  = [hcloud_server.master1]
-    name        = "${var.cluster_name}-master-${random_string.master[2].id}"
+    name        = "${var.name}-master-${random_string.master[2].id}"
     location    = data.hcloud_location.cluster.name
     server_type = var.master_type
     image       = var.image
@@ -129,7 +142,7 @@ resource "hcloud_server" "master2" {
         lb_ext_v6    = hcloud_load_balancer.cluster.ipv6
     })
     labels = {
-        cluster = var.cluster_name
+        cluster = var.name
         master  = "true"
     }
     network {
@@ -169,7 +182,7 @@ resource "random_string" "agent" {
 resource "hcloud_server" "agent" {
     depends_on  = [hcloud_server.master2]
     count       = var.agent_count
-    name        = "${var.cluster_name}-agent-${random_string.agent[count.index].id}"
+    name        = "${var.name}-agent-${random_string.agent[count.index].id}"
     location    = data.hcloud_location.cluster.name
     server_type = var.agent_type
     image       = var.image
@@ -181,7 +194,7 @@ resource "hcloud_server" "agent" {
         lb_ip        = hcloud_load_balancer_network.cluster.ip
     })
     labels = {
-        cluster = var.cluster_name
+        cluster = var.name
         agent   = "true"
     }
     network {

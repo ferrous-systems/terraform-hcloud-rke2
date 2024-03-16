@@ -69,6 +69,12 @@ variable "hcloud_csi_version" {
     description = "Hetzner Cloud CSI driver version"
 }
 
+variable "cert_manager_version" {
+    type        = string
+    default     = "v1.14.4"
+    description = "cert-manager Helm chart version"
+}
+
 variable "longhorn_version" {
     type        = string
     default     = "1.5.4"

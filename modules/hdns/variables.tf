@@ -1,11 +1,6 @@
-variable "setup_dns" {
-    type        = bool
-    description = "set to true to add DNS records"
-}
-
-variable "domain" {
+variable "zone" {
     type        = string
-    description = "domain of the cluster"
+    description = "DNS zone for the cluster"
 }
 
 variable "cluster_name" {
@@ -21,4 +16,10 @@ variable "lb_ipv4" {
 variable "lb_ipv6" {
     type        = string
     description = "IPv6 address of the load balancer"
+}
+
+variable "ttl" {
+    type        = number
+    default     = 300
+    description = "TTL of the cluster wildcard records"
 }

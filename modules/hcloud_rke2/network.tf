@@ -3,7 +3,7 @@ data "hcloud_location" "cluster" {
 }
 
 resource "hcloud_network" "private" {
-    name     = var.cluster_name
+    name     = var.name
     ip_range = var.network
 }
 
@@ -15,11 +15,11 @@ resource "hcloud_network_subnet" "cluster" {
 }
 
 resource "hcloud_load_balancer" "cluster" {
-    name               = "${var.cluster_name}-cluster"
+    name               = "${var.name}-cluster"
     load_balancer_type = var.lb_type
     location           = data.hcloud_location.cluster.name
     labels             = {
-        cluster = var.cluster_name
+        cluster = var.name
     }
 }
 
@@ -33,7 +33,7 @@ resource "hcloud_load_balancer_target" "cluster" {
     depends_on       = [hcloud_load_balancer_network.cluster]
     type             = "label_selector"
     load_balancer_id = hcloud_load_balancer.cluster.id
-    label_selector   = "cluster=${var.cluster_name},master=true"
+    label_selector   = "cluster=${var.name},master=true"
     use_private_ip   = true
 }
 
@@ -95,7 +95,7 @@ resource "hcloud_load_balancer_service" "https" {
 }
 
 data "hcloud_load_balancers" "cluster" {
-    with_selector = "cluster=${var.cluster_name}"
+    with_selector = "cluster=${var.name}"
 }
 
 locals {

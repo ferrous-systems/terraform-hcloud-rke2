@@ -1,14 +1,9 @@
-variable "use_dns" {
-    type        = bool
-    description = "use DNS name in kubeconfig if true"
-}
-
 variable "domain" {
     type        = string
     description = "domain of the cluster"
 }
 
-variable "cluster_name" {
+variable "name" {
     type        = string
     description = "name of the cluster"
 }

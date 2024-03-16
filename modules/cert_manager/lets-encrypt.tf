@@ -1,9 +1,9 @@
 locals {
-    configure_issuer = var.acme_email != null
+    create = var.acme_email != null
 }
 
 resource "kubectl_manifest" "lets_encrypt" {
-    count      = local.configure_issuer ? 1 : 0
+    count      = local.create ? 1 : 0
     depends_on = [helm_release.cert_manager]
     yaml_body  = <<-EOT
     apiVersion: cert-manager.io/v1
@@ -19,6 +19,6 @@ resource "kubectl_manifest" "lets_encrypt" {
         solvers:
           - http01:
               ingress:
-                ingressClassName: nginx
+                ingressClassName: ${var.acme_ingress_class}
     EOT
 }
