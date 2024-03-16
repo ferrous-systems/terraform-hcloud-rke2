@@ -93,16 +93,22 @@ variable "headlamp_version" {
     description = "Headlamp Helm chart version"
 }
 
+variable "write_config_files" {
+    type        = bool
+    default     = false
+    description = "write SSK private key and client config if true"
+}
+
 variable "automated_upgrades" {
     type        = bool
     default     = false
-    description = "perform automated upgrades, only works with AMD64"
+    description = "perform automated upgrades if true; only works with AMD64"
 }
 
 variable "acme_email" {
     type        = string
     default     = null
-    description = "Let's Encrypt ACME registration e-mail"
+    description = "Let's Encrypt ACME registration e-mail; if set it will create the cluster issuer"
 }
 
 variable "use_hcloud_storage" {

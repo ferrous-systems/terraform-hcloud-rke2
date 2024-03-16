@@ -18,6 +18,16 @@ output "agent" {
     value = module.cluster.agent
 }
 
+output "ssh_private_key" {
+    value     = module.cluster.ssh_private_key
+    sensitive = true
+}
+
+output "kubeconfig" {
+    value     = local.kubeconfig
+    sensitive = true
+}
+
 output "longhorn_password" {
     value     = var.use_longhorn ? module.longhorn[0].password : null
     sensitive = true

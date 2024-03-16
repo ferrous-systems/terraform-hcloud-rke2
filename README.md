@@ -46,26 +46,42 @@ terraform apply
 ```
 
 This will create an RKE2 cluster and output the information about
-the load balancer and node information. It will also create the
-SSH private key, `id_rsa_mycluster`, and Kubernetes configuration
-file, `config-mycluster.yaml`, in the current folder. Note:
-_mycluster_ in the name comes from `cluster_name` variable in
+the load balancer and node information.
+
+## Customizations
+
+### Config Files
+
+For convenience, you can ask the configuration to store the SSH
+private key, `id_rsa_mycluster`, as well as Kubernetes configuration
+file, `config-mycluster.yaml`, in the current folder.
+Note: _mycluster_ in the name comes from `cluster_name` variable in
 the configuration.
 
-You can access cluster's nodes using the following command.
+```hcl
+write_config_files = true
+```
+
+Then you can access cluster's nodes using the following command.
 
 ```shell
 ssh -l root -i id_rsa_mycluster <node IP>
 ```
 
-Wait for the load balancer to become healthy. Now you can access the
-cluster using Kubernetes CLI.
+Make sure the load balancer is healthy. You can access the cluster using
+Kubernetes CLI.
 
 ```shell
 kubectl get nodes --kubeconfig=config-mycluster.yaml
 ```
 
-## Customizations
+Alternatively, you can extract the content of the files using
+`output` command.
+
+```shell
+terraform output -raw kubeconfig >~/.kube/config
+terraform output -raw ssh_private_key >~/.ssh/id_rsa
+```
 
 ### Agent Nodes
 
@@ -247,6 +263,11 @@ Until then you can use node rebuild procedure outlined above.
     ```shell
     terraform apply
     ```
+
+You probably want to keep it disabled during the initial cluster creation
+and enable it shortly after. This thing can start a cluster upgrade while
+your cluster is in process of being created even if you didn't change
+the version.
 
 ### Destroying the Cluster
 

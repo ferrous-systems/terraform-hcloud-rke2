@@ -1,17 +1,13 @@
 resource "local_file" "ssh_key" {
+    count           = var.write_config_files ? 1 : 0
     content         = module.cluster.ssh_private_key
     filename        = "id_rsa_${var.cluster_name}"
     file_permission = "0600"
 }
 
 locals {
-    api_url = "https://${local.setup_dns ? module.cluster.api : module.cluster.lb_ipv4}:6443"
-}
-
-resource "local_file" "kubeconfig" {
-    filename        = "config-${var.cluster_name}.yaml"
-    file_permission = "0600"
-    content         = <<-EOT
+    api_url    = "https://${local.setup_dns ? module.cluster.api : module.cluster.lb_ipv4}:6443"
+    kubeconfig = <<-EOT
     apiVersion: v1
     kind: Config
     clusters:
@@ -33,4 +29,11 @@ resource "local_file" "kubeconfig" {
         client-certificate-data: ${module.cluster.client_certificate}
         client-key-data: ${module.cluster.client_key}
     EOT
+}
+
+resource "local_file" "kubeconfig" {
+    count           = var.write_config_files ? 1 : 0
+    filename        = "config-${var.cluster_name}.yaml"
+    file_permission = "0600"
+    content         = local.kubeconfig
 }
