@@ -56,6 +56,7 @@ resource "hcloud_server" "master0" {
         replace_triggered_by  = [random_string.master[0]]
         ignore_changes        = [
             location,
+            server_type,
             image,
             ssh_keys,
             user_data
@@ -118,6 +119,7 @@ resource "hcloud_server" "master1" {
         replace_triggered_by  = [random_string.master[1]]
         ignore_changes        = [
             location,
+            server_type,
             image,
             ssh_keys,
             user_data
@@ -166,6 +168,7 @@ resource "hcloud_server" "master2" {
         replace_triggered_by  = [random_string.master[2]]
         ignore_changes        = [
             location,
+            server_type,
             image,
             ssh_keys,
             user_data
@@ -218,6 +221,7 @@ resource "hcloud_server" "agent" {
         replace_triggered_by  = [random_string.agent[count.index]]
         ignore_changes        = [
             location,
+            server_type,
             image,
             ssh_keys,
             user_data
