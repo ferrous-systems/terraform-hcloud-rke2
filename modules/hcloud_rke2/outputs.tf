@@ -81,3 +81,12 @@ output "agent" {
         }
     ]
 }
+
+output "ingress_class_name" {
+    depends_on = [
+        hcloud_load_balancer_service.http,
+        hcloud_load_balancer_service.https,
+        hcloud_server.master2
+    ]
+    value = "nginx"
+}

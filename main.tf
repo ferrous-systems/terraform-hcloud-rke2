@@ -39,6 +39,7 @@ module "csi" {
 }
 
 module "upgrade" {
+    depends_on                        = [module.ccm]
     source                            = "./modules/upgrade"
     count                             = var.automated_upgrades ? 1 : 0
     system_upgrade_controller_version = var.system_upgrade_controller_version
@@ -46,23 +47,31 @@ module "upgrade" {
 }
 
 module "cert_manager" {
-    source               = "./modules/cert_manager"
+    depends_on           = [module.ccm]
+    source               = "granito-source/cert-manager/kubernetes"
+    version              = "~> 0.1.1"
     cert_manager_version = var.cert_manager_version
     acme_email           = var.acme_email
+    ingress_class_name   = module.cluster.ingress_class_name
 }
 
 module "headlamp" {
-    source           = "./modules/headlamp"
+    source           = "granito-source/headlamp/kubernetes"
+    version          = "~> 0.2.0"
     count            = var.use_headlamp ? 1 : 0
     headlamp_version = var.headlamp_version
-    domain           = module.cluster.fqdn
-    cluster_issuer   = module.cert_manager.cluster_issuer
+    host             = "headlamp.${module.cluster.fqdn}"
+    ingress_class    = module.cluster.ingress_class_name
+    issuer_name      = module.cert_manager.cluster_issuer
 }
 
 module "longhorn" {
-    source           = "./modules/longhorn"
-    count            = var.use_longhorn ? 1 : 0
-    longhorn_version = var.longhorn_version
-    domain           = module.cluster.fqdn
-    cluster_issuer   = module.cert_manager.cluster_issuer
+    source             = "granito-source/longhorn/kubernetes"
+    version            = "~> 0.2.0"
+    count              = var.use_longhorn ? 1 : 0
+    longhorn_version   = var.longhorn_version
+    host               = "longhorn.${module.cluster.fqdn}"
+    password           = var.longhorn_password
+    ingress_class_name = module.cluster.ingress_class_name
+    issuer_name        = module.cert_manager.cluster_issuer
 }

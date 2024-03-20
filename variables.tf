@@ -123,6 +123,13 @@ variable "use_longhorn" {
     description = "deploy Longhorn distributed block storage if true"
 }
 
+variable "longhorn_password" {
+    type        = string
+    default     = null
+    sensitive   = true
+    description = "password for Longhorn UI"
+}
+
 variable "use_headlamp" {
     type        = bool
     default     = false
