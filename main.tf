@@ -38,14 +38,6 @@ module "csi" {
     default_storage_class = !var.use_longhorn
 }
 
-module "upgrade" {
-    depends_on                        = [module.ccm]
-    source                            = "./modules/upgrade"
-    count                             = var.automated_upgrades ? 1 : 0
-    system_upgrade_controller_version = var.system_upgrade_controller_version
-    rke2_version                      = var.rke2_version
-}
-
 module "cert_manager" {
     depends_on           = [module.ccm]
     source               = "granito-source/cert-manager/kubernetes"

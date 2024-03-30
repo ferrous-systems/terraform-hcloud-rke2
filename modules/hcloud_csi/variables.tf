@@ -5,6 +5,7 @@ variable "hcloud_secret" {
 
 variable "hcloud_csi_version" {
     type        = string
+    default     = null
     description = "Hetzner Cloud CSI driver version"
 }
 

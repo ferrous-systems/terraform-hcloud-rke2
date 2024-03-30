@@ -11,5 +11,6 @@ variable "network" {
 
 variable "hcloud_ccm_version" {
     type        = string
+    default     = null
     description = "Cloud Controller Manager for Hetzner Cloud version"
 }

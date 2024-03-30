@@ -14,7 +14,7 @@ variable "hdns_token" {
 variable "location" {
     type        = string
     default     = "nbg1"
-    description = "Hetzner location"
+    description = "Hetzner location for the cluster"
 }
 
 variable "domain" {
@@ -53,43 +53,37 @@ variable "image" {
 
 variable "rke2_version" {
     type        = string
-    default     = "v1.27.11+rke2r1"
+    default     = ""
     description = "target version of RKE2"
 }
 
 variable "hcloud_ccm_version" {
     type        = string
-    default     = "1.19.0"
+    default     = null
     description = "Cloud Controller Manager for Hetzner Cloud version"
 }
 
 variable "hcloud_csi_version" {
     type        = string
-    default     = "2.6.0"
+    default     = null
     description = "Hetzner Cloud CSI driver version"
-}
-
-variable "system_upgrade_controller_version" {
-    type        = string
-    default     = "0.13.4"
-    description = "version of the System Upgrade Controller"
 }
 
 variable "cert_manager_version" {
     type        = string
-    default     = "v1.14.4"
+    default     = null
     description = "cert-manager Helm chart version"
 }
 
 variable "longhorn_version" {
     type        = string
-    default     = "1.5.4"
+    default     = null
     description = "Longhorn Helm chart version"
 }
 
 variable "headlamp_version" {
     type        = string
-    default     = "0.19.0"
+    default     = null
     description = "Headlamp Helm chart version"
 }
 
@@ -97,12 +91,6 @@ variable "write_config_files" {
     type        = bool
     default     = false
     description = "write SSK private key and client config if true"
-}
-
-variable "automated_upgrades" {
-    type        = bool
-    default     = false
-    description = "perform automated upgrades if true; only works with AMD64"
 }
 
 variable "acme_email" {

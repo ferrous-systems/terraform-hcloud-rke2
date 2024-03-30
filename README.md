@@ -183,11 +183,11 @@ You can control what versions of software to deploy by setting these
 variables.
 
 ```hcl
-rke2_version                      = "v1.27.11+rke2r1"
-system_upgrade_controller_version = "0.13.4"
-hcloud_csi_version                = "2.6.0"
-cert_manager_version              = "v1.14.4"
-longhorn_version                  = "1.5.4"
+rke2_version         = "v1.27.11+rke2r1"
+hcloud_ccm_version   = "1.19.0"
+hcloud_csi_version   = "2.6.0"
+cert_manager_version = "v1.14.4"
+longhorn_version     = "1.5.4"
 ```
 
 The version of Ingress NGINX Controller is controlled by the
@@ -245,29 +245,6 @@ is destroyed. The procedure follows.
    ```
    This will replace the node as described above. For master nodes use
    `module.cluster.random_string.master` instances.
-
-### Upgrading Cluster
-
-The configuration supports
-[automated RKE2 upgrades](https://docs.rke2.io/upgrade/automated_upgrade)
-on AMD64 architecture. For ARM64 support please watch
-[this issue in GitHub](https://github.com/rancher/rke2-upgrade/issues/24).
-Until then you can use node rebuild procedure outlined above.
-
-1. Enable the upgrades and set the target version.
-    ```hcl
-    automated_upgrades = true
-    rke2_version       = "v1.29.2+rke2r1"
-    ```
-2. Apply the configuration.
-    ```shell
-    terraform apply
-    ```
-
-You probably want to keep it disabled during the initial cluster creation
-and enable it shortly after. This thing can start a cluster upgrade while
-your cluster is in process of being created even if you didn't change
-the version.
 
 ### Destroying the Cluster
 

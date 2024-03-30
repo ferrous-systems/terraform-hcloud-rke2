@@ -39,6 +39,7 @@ variable "lb_ip" {
 
 variable "rke2_version" {
     type        = string
+    default     = ""
     description = "version of RKE2 to install"
 }
 
