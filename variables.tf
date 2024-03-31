@@ -118,6 +118,31 @@ variable "longhorn_password" {
     description = "password for Longhorn UI"
 }
 
+variable "longhorn_backup_target" {
+    type        = string
+    default     = null
+    description = "Longhorn S3 backup target"
+}
+
+variable "longhorn_aws_endpoints" {
+    type        = string
+    default     = null
+    description = "Longhorn S3 backup endpoints, must be defined if not using AWS"
+}
+
+variable "longhorn_aws_access_key_id" {
+    type        = string
+    default     = null
+    description = "Longhorn S3 backup access key ID"
+}
+
+variable "longhorn_aws_secret_access_key" {
+    type        = string
+    sensitive   = true
+    default     = null
+    description = "Longhorn S3 backup secret access key"
+}
+
 variable "use_headlamp" {
     type        = bool
     default     = false

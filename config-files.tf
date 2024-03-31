@@ -19,12 +19,12 @@ locals {
     - context:
         cluster: ${var.cluster_name}
         namespace: kube-system
-        user: ${var.cluster_name}-system:admin
-      name: ${var.cluster_name}-system:admin
-    current-context: ${var.cluster_name}-system:admin
+        user: system:admin@${var.cluster_name}
+      name: system:admin@${var.cluster_name}
+    current-context: system:admin@${var.cluster_name}
     preferences: {}
     users:
-    - name: ${var.cluster_name}-system:admin
+    - name: system:admin@${var.cluster_name}
       user:
         client-certificate-data: ${module.cluster.client_certificate}
         client-key-data: ${module.cluster.client_key}

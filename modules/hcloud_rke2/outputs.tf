@@ -82,7 +82,7 @@ output "agent" {
     ]
 }
 
-output "ingress_class_name" {
+output "ingress_class" {
     depends_on = [
         hcloud_load_balancer_service.http,
         hcloud_load_balancer_service.https,

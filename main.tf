@@ -24,6 +24,7 @@ module "dns" {
 }
 
 module "ccm" {
+    depends_on         = [module.cluster]
     source             = "./modules/hcloud_ccm"
     hcloud_ccm_version = var.hcloud_ccm_version
     hcloud_token       = var.hcloud_token
@@ -44,7 +45,7 @@ module "cert_manager" {
     version              = "~> 0.1.1"
     cert_manager_version = var.cert_manager_version
     acme_email           = var.acme_email
-    ingress_class_name   = module.cluster.ingress_class_name
+    ingress_class_name   = module.cluster.ingress_class
 }
 
 module "headlamp" {
@@ -53,17 +54,21 @@ module "headlamp" {
     count            = var.use_headlamp ? 1 : 0
     headlamp_version = var.headlamp_version
     host             = "headlamp.${module.cluster.fqdn}"
-    ingress_class    = module.cluster.ingress_class_name
+    ingress_class    = module.cluster.ingress_class
     issuer_name      = module.cert_manager.cluster_issuer
 }
 
 module "longhorn" {
-    source             = "granito-source/longhorn/kubernetes"
-    version            = "~> 0.2.0"
-    count              = var.use_longhorn ? 1 : 0
-    longhorn_version   = var.longhorn_version
-    host               = "longhorn.${module.cluster.fqdn}"
-    password           = var.longhorn_password
-    ingress_class_name = module.cluster.ingress_class_name
-    issuer_name        = module.cert_manager.cluster_issuer
+    source                = "granito-source/longhorn/kubernetes"
+    version               = "~> 0.3.0"
+    count                 = var.use_longhorn ? 1 : 0
+    longhorn_version      = var.longhorn_version
+    host                  = "longhorn.${module.cluster.fqdn}"
+    password              = var.longhorn_password
+    ingress_class         = module.cluster.ingress_class
+    issuer_name           = module.cert_manager.cluster_issuer
+    backup_target         = var.longhorn_backup_target
+    aws_endpoints         = var.longhorn_aws_endpoints
+    aws_access_key_id     = var.longhorn_aws_access_key_id
+    aws_secret_access_key = var.longhorn_aws_secret_access_key
 }
