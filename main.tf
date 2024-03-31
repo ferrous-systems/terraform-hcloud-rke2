@@ -42,10 +42,10 @@ module "csi" {
 module "cert_manager" {
     depends_on           = [module.ccm]
     source               = "granito-source/cert-manager/kubernetes"
-    version              = "~> 0.1.1"
+    version              = "~> 0.2.0"
     cert_manager_version = var.cert_manager_version
     acme_email           = var.acme_email
-    ingress_class_name   = module.cluster.ingress_class
+    ingress_class        = module.cluster.ingress_class
 }
 
 module "headlamp" {
