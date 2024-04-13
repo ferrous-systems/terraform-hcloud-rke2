@@ -67,15 +67,14 @@ resource "hcloud_server" "master0" {
 data "remote_file" "kubeconfig" {
     path = "/etc/rancher/rke2/rke2.yaml"
     conn {
-        host        = local.master0_ipv4_address
+        host        = hcloud_server.master0.ipv4_address
         user        = "root"
         private_key = tls_private_key.root.private_key_openssh
     }
 }
 
-locals {
-    master0_ipv4_address = hcloud_server.master0.ipv4_address
-    kubeconfig           = yamldecode(data.remote_file.kubeconfig.content)
+resource "terraform_data" "kubeconfig" {
+    input = yamldecode(data.remote_file.kubeconfig.content)
 }
 
 resource "hcloud_server" "master1" {

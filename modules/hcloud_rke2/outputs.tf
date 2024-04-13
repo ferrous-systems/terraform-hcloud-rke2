@@ -35,15 +35,15 @@ output "api" {
 }
 
 output "cluster_ca_certificate" {
-    value = local.kubeconfig.clusters[0].cluster.certificate-authority-data
+    value = terraform_data.kubeconfig.output.clusters[0].cluster.certificate-authority-data
 }
 
 output "client_certificate" {
-    value = local.kubeconfig.users[0].user.client-certificate-data
+    value = terraform_data.kubeconfig.output.users[0].user.client-certificate-data
 }
 
 output "client_key" {
-    value     = local.kubeconfig.users[0].user.client-key-data
+    value     = terraform_data.kubeconfig.output.users[0].user.client-key-data
     sensitive = true
 }
 
