@@ -160,13 +160,26 @@ to Hetzner Cloud CSI driver, then `longhorn` storage class becomes
 the default.
 
 Longhorn UI will be available at
-<https://longhorn.mycluster.mydomain.tld/>. It is protected by Basic
-authentication. The username is `longhorn`. To retrieve the password
-use:
+<https://longhorn.mycluster.mydomain.tld/> protected by Basic
+authentication is you provide a password for it. The username is
+`longhorn`.
 
-```shell
-terraform output longhorn_password
+```hcl
+longhorn_password = "L0nGHo7n"
 ```
+
+It is essential to configure a backup target to be used by Longhorn in
+production deployments. The configuration supports S3 target. Use
+the following variables to configure it.
+
+```hcl
+longhorn_backup_target         = "s3://mycluster@us-east/"
+longhorn_aws_endpoints         = "https://s3.provider.tld"
+longhorn_aws_access_key_id     = "accessKeyId"
+longhorn_aws_secret_access_key = "SecretAccessKey"
+```
+
+Providing `longhorn_aws_endpoints` is optional.
 
 [Headlamp](https://headlamp.dev/) UI will be available at
 <https://headlamp.mycluster.mydomain.tld/>. You can get the
