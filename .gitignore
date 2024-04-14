@@ -2,6 +2,7 @@
 .settings/
 .terraform/
 .vscode/
+terraform.tfstate.d/
 .classpath
 .DS_Store
 .project
@@ -10,4 +11,3 @@
 *.tfvars
 config-*.yaml
 id_rsa_*
-terraform.*
