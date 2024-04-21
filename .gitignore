@@ -8,6 +8,6 @@ terraform.tfstate.d/
 .project
 .terraform.*
 *.iml
-*.tfvars
+terraform.*
 config-*.yaml
 id_rsa_*
