@@ -2,7 +2,7 @@ terraform {
     required_providers {
         hcloud = {
             source  = "hetznercloud/hcloud"
-            version = "~> 1.46.1"
+            version = "~> 1.47.0"
         }
         hetznerdns = {
             source  = "timohirt/hetznerdns"
@@ -14,7 +14,7 @@ terraform {
         }
         remote = {
             source  = "tenstad/remote"
-            version = "~> 0.1.2"
+            version = "~> 0.1.3"
         }
     }
 }

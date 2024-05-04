@@ -248,7 +248,8 @@ is destroyed. The procedure follows.
    of the node in the list. For example: `3`.
 2. Drain the node.
    ```shell
-   kubectl drain --ignore-daemonsets mycluster-agent-9wsi3q \
+   kubectl drain --ignore-daemonsets --delete-emptydir-data \
+       mycluster-agent-9wsi3q \
        --kubeconfig=config-mycluster.yaml
    ```
    Wait for the command to finish.
