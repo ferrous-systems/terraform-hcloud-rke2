@@ -245,7 +245,7 @@ is destroyed. The procedure follows.
    terraform output agent
    ```
    For a master node use `output master`. Calculate the zero-based index
-   of the node in the list. For example: `3`.
+   of the node in the list. For example: `2`.
 2. Drain the node.
    ```shell
    kubectl drain --ignore-daemonsets --delete-emptydir-data \
@@ -255,7 +255,7 @@ is destroyed. The procedure follows.
    Wait for the command to finish.
 3. Replace the name suffix.
    ```shell
-   terraform apply -replace 'module.cluster.random_string.agent[3]'
+   terraform apply -replace 'module.cluster.random_string.agent[2]'
    ```
    This will replace the node as described above. For master nodes use
    `module.cluster.random_string.master` instances.

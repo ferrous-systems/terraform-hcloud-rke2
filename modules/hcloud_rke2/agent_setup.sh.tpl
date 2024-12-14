@@ -15,15 +15,18 @@ EOF
 
 umask 0022
 
-cat <<EOF >/etc/multipath.conf
-defaults {
-    user_friendly_names yes
-}
-blacklist {
-    devnode "^sd[a-z0-9]+"
-}
+cat <<EOF >/etc/modules-load.d/dm-crypt.conf
+dm-crypt
 EOF
-systemctl restart multipathd.service
+modprobe -v dm-crypt
+
+apt update -y
+apt install -y nfs-common
+
+systemctl stop multipathd.socket
+systemctl disable multipathd.socket
+systemctl stop multipathd.service
+systemctl disable multipathd.service
 
 curl -sSfL https://get.rke2.io/ | INSTALL_RKE2_METHOD=tar INSTALL_RKE2_TYPE=agent INSTALL_RKE2_VERSION="${rke2_version}" sh -
 systemctl enable rke2-agent.service
