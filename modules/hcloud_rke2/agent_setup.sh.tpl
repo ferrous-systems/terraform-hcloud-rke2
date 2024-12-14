@@ -18,10 +18,10 @@ umask 0022
 cat <<EOF >/etc/modules-load.d/dm-crypt.conf
 dm-crypt
 EOF
-modprobe -v dm-crypt
+modprobe dm-crypt
 
-apt update -y
-apt install -y nfs-common
+apt-get update -y
+apt-get install -y nfs-common
 
 systemctl stop multipathd.socket
 systemctl disable multipathd.socket
