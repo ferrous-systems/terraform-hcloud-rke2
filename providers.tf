@@ -27,41 +27,34 @@ provider "hetznerdns" {
     apitoken = var.hdns_token
 }
 
-resource "terraform_data" "cluster_api_url" {
-    input = "https://${module.cluster.lb_ipv4}:6443"
-}
-
-resource "terraform_data" "cluster_ca_certificate" {
-    input = base64decode(module.cluster.cluster_ca_certificate)
-}
-
-resource "terraform_data" "client_certificate" {
-    input = base64decode(module.cluster.client_certificate)
-}
-
-resource "terraform_data" "client_key" {
-    input = base64decode(module.cluster.client_key)
+resource "terraform_data" "kubernetes" {
+    input = {
+        host = "https://${module.cluster.lb_ipv4}:6443"
+        cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
+        client_certificate = base64decode(module.cluster.client_certificate)
+        client_key = base64decode(module.cluster.client_key)
+    }
 }
 
 provider "kubernetes" {
-    host                   = terraform_data.cluster_api_url.output
-    cluster_ca_certificate = terraform_data.cluster_ca_certificate.output
-    client_certificate     = terraform_data.client_certificate.output
-    client_key             = terraform_data.client_key.output
+    host                   = terraform_data.kubernetes.output.host
+    cluster_ca_certificate = terraform_data.kubernetes.output.cluster_ca_certificate
+    client_certificate     = terraform_data.kubernetes.output.client_certificate
+    client_key             = terraform_data.kubernetes.output.client_key
 }
 
 provider "kubectl" {
-    host                   = terraform_data.cluster_api_url.output
-    cluster_ca_certificate = terraform_data.cluster_ca_certificate.output
-    client_certificate     = terraform_data.client_certificate.output
-    client_key             = terraform_data.client_key.output
+    host                   = terraform_data.kubernetes.output.host
+    cluster_ca_certificate = terraform_data.kubernetes.output.cluster_ca_certificate
+    client_certificate     = terraform_data.kubernetes.output.client_certificate
+    client_key             = terraform_data.kubernetes.output.client_key
 }
 
 provider "helm" {
     kubernetes {
-        host                   = terraform_data.cluster_api_url.output
-        cluster_ca_certificate = terraform_data.cluster_ca_certificate.output
-        client_certificate     = terraform_data.client_certificate.output
-        client_key             = terraform_data.client_key.output
+        host                   = terraform_data.kubernetes.output.host
+        cluster_ca_certificate = terraform_data.kubernetes.output.cluster_ca_certificate
+        client_certificate     = terraform_data.kubernetes.output.client_certificate
+        client_key             = terraform_data.kubernetes.output.client_key
     }
 }

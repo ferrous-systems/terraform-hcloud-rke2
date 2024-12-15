@@ -234,8 +234,9 @@ Here is the procedure.
 ### Rebuilding a Node
 
 You can rebuild any individual node in the cluster be that an agent or
-a master node. A new node is created first and then the existing node
-is destroyed. The procedure follows.
+a master node (see special procedure for `master[0]` below). A new
+node is created first and then the existing node is destroyed.
+The procedure follows.
 
 1. Obtain the information about nodes in the cluster and find the
    node you want to rebuild. Note the type of the node (master vs agent).
@@ -258,7 +259,29 @@ is destroyed. The procedure follows.
    terraform apply -replace 'module.cluster.random_string.agent[2]'
    ```
    This will replace the node as described above. For master nodes use
-   `module.cluster.random_string.master` instances.
+   `module.cluster.random_string.master` instances. Monitor the cluster
+   to ensure the workloads are stable before proceeding to replace
+   another node.
+
+**Important:** Because `master[0]` node is used to retrieve the cluster's
+configuration file, and the configuration is needed to read the cluster's
+resources, an attempt to replace the node using the procedure outlined
+above creates a failure during the planning phase. In order to execute
+the node replacement cleanly, the third step needs to be done in two parts.
+First, replace the node but avoid propagating changes to the cluster's
+configuration to the providers that use the it.
+
+```shell
+terraform apply -replace 'module.cluster.random_string.master[0]' \
+   -target terraform_data.kubernetes
+```
+
+Then finish the work by applying the remaining changes. This will destroy
+the original node.
+
+```shell
+terraform apply -replace 'module.cluster.random_string.agent[2]'
+```
 
 ### Destroying the Cluster
 
@@ -276,3 +299,10 @@ The original code in this repository comes from Sven Mattsen,
 <https://github.com/scm2342/rke2-build-hetzner>. Further development
 was influenced by ideas picked up from Felix Wenzel,
 <https://github.com/wenzel-felix/terraform-hcloud-rke2>.
+
+
+```shell
+tofu apply -replace 'module.cluster.random_string.master[0]' -target module.cluster
+tofu apply -target terraform_data.client_certificate
+tofu apply -target terraform_data.client_key
+```
