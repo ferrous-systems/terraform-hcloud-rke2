@@ -57,7 +57,7 @@ module "headlamp" {
     headlamp_version = var.headlamp_version
     host             = "headlamp.${module.cluster.fqdn}"
     ingress_class    = module.cluster.ingress_class
-    issuer_name      = module.cert_manager.cluster_issuer
+    issuer_name      = var.use_staging_issuer ? module.cert_manager.staging_cluster_issuer : module.cert_manager.cluster_issuer
 }
 
 module "longhorn" {
@@ -69,7 +69,7 @@ module "longhorn" {
     host                  = "longhorn.${module.cluster.fqdn}"
     password              = var.longhorn_password
     ingress_class         = module.cluster.ingress_class
-    issuer_name           = module.cert_manager.cluster_issuer
+    issuer_name           = var.use_staging_issuer ? module.cert_manager.staging_cluster_issuer : module.cert_manager.cluster_issuer
     backup_target         = var.longhorn_backup_target
     aws_endpoints         = var.longhorn_aws_endpoints
     aws_access_key_id     = var.longhorn_aws_access_key_id

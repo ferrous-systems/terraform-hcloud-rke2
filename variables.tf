@@ -99,6 +99,12 @@ variable "acme_email" {
     description = "Let's Encrypt ACME registration e-mail; if set it will create the cluster issuer"
 }
 
+variable "use_staging_issuer" {
+    type        = bool
+    default     = false
+    description = "Use a staging issuer for the cert-manager"
+}
+
 variable "use_hcloud_storage" {
     type        = bool
     default     = false
