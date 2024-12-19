@@ -9,6 +9,12 @@ variable "network" {
     description = "private cluster network name"
 }
 
+variable "cluster_cidr" {
+    type        = string
+    default     = "10.42.0.0/16"
+    description = "cluster CIDR block, must match cluster-cidr of RKE2"
+}
+
 variable "hcloud_ccm_version" {
     type        = string
     default     = null

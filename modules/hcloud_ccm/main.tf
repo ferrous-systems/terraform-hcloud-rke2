@@ -17,6 +17,7 @@ resource "helm_release" "hcloud_ccm" {
     version    = var.hcloud_ccm_version
     values     = [
         <<-EOT
+        replicaCount: 2
         env:
           HCLOUD_TOKEN:
             valueFrom:
@@ -25,6 +26,7 @@ resource "helm_release" "hcloud_ccm" {
                 key: token
         networking:
           enabled: true
+          clusterCIDR: ${var.cluster_cidr}
           network:
             valueFrom:
               secretKeyRef:
