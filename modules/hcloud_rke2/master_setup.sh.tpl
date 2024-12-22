@@ -15,11 +15,27 @@ server: $SUPERVISOR_URL
 token: "${token}"
 node-ip: $NODE_IP
 cloud-provider-name: external
+cni: cilium
+cluster-cidr: ${cluster_cidr}
+service-cidr: ${service_cidr}
 tls-san:
   - ${api}
   - ${lb_ip}
   - ${lb_ext_v4}
   - ${lb_ext_v6}
+EOF
+
+mkdir -p /var/lib/rancher/rke2/server/manifests
+cat <<EOF >/var/lib/rancher/rke2/server/manifests/rke2-cilium-config.yaml
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: rke2-cilium
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    routingMode: native
+    ipv4NativeRoutingCIDR: ${cluster_cidr}
 EOF
 
 mkdir -p /var/lib/rancher/rke2/server/manifests

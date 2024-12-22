@@ -1,23 +1,26 @@
 resource "kubernetes_secret" "hcloud" {
-    metadata {
-        namespace = "kube-system"
-        name      = "hcloud"
-    }
-    data = {
-        token   = var.hcloud_token
-        network = var.network
-    }
+  metadata {
+    namespace = "kube-system"
+    name      = "hcloud"
+  }
+  data = {
+    token   = var.hcloud_token
+    network = var.network
+  }
 }
 
 resource "helm_release" "hcloud_ccm" {
-    namespace  = "kube-system"
-    name       = "hcloud-ccm"
-    repository = "https://charts.hetzner.cloud"
-    chart      = "hcloud-cloud-controller-manager"
-    version    = var.hcloud_ccm_version
-    values     = [
-        <<-EOT
-        replicaCount: 2
+  namespace  = "kube-system"
+  name       = "hcloud-ccm"
+  repository = "https://charts.hetzner.cloud"
+  chart      = "hcloud-cloud-controller-manager"
+  version    = var.hcloud_ccm_version
+  values = [
+    <<-EOT
+        kind: DaemonSet
+        nodeSelector:
+          kubernetes.io/os: linux
+          node-role.kubernetes.io/master: "true"
         env:
           HCLOUD_TOKEN:
             valueFrom:
@@ -33,5 +36,5 @@ resource "helm_release" "hcloud_ccm" {
                 name: ${kubernetes_secret.hcloud.metadata[0].name}
                 key: network
         EOT
-    ]
+  ]
 }

@@ -1,11 +1,11 @@
 resource "helm_release" "hcloud_csi" {
-    namespace  = "kube-system"
-    name       = "hcloud-csi"
-    repository = "https://charts.hetzner.cloud"
-    chart      = "hcloud-csi"
-    version    = var.hcloud_csi_version
-    values     = [
-        <<-EOT
+  namespace  = "kube-system"
+  name       = "hcloud-csi"
+  repository = "https://charts.hetzner.cloud"
+  chart      = "hcloud-csi"
+  version    = var.hcloud_csi_version
+  values = [
+    <<-EOT
         controller:
           hcloudToken:
             existingSecret:
@@ -16,5 +16,5 @@ resource "helm_release" "hcloud_csi" {
             defaultStorageClass: ${var.default_storage_class}
             reclaimPolicy: Delete
         EOT
-    ]
+  ]
 }
