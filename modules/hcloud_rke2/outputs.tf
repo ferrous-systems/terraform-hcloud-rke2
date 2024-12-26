@@ -9,7 +9,7 @@ output "cluster_cidr" {
 output "lb_ipv4" {
   depends_on = [
     hcloud_load_balancer_service.k8s_api,
-    hcloud_server.master2
+    hcloud_server.master0
   ]
   value = hcloud_load_balancer.cluster.ipv4
 }
@@ -17,7 +17,7 @@ output "lb_ipv4" {
 output "lb_ipv6" {
   depends_on = [
     hcloud_load_balancer_service.k8s_api,
-    hcloud_server.master2
+    hcloud_server.master0
   ]
   value = hcloud_load_balancer.cluster.ipv6
 }
@@ -25,7 +25,7 @@ output "lb_ipv6" {
 output "fqdn" {
   depends_on = [
     hcloud_load_balancer_service.k8s_api,
-    hcloud_server.master2
+    hcloud_server.master0
   ]
   value = local.fqdn
 }
@@ -33,7 +33,7 @@ output "fqdn" {
 output "api" {
   depends_on = [
     hcloud_load_balancer_service.k8s_api,
-    hcloud_server.master2
+    hcloud_server.master0
   ]
   value = local.api
 }

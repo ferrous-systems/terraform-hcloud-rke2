@@ -27,7 +27,6 @@ module "dns" {
 }
 
 module "ccm" {
-  depends_on         = [module.cluster]
   source             = "./modules/hcloud_ccm"
   hcloud_ccm_version = var.hcloud_ccm_version
   hcloud_token       = var.hcloud_token
@@ -36,7 +35,7 @@ module "ccm" {
 }
 
 module "csi" {
-  depends_on            = [module.cluster]
+  depends_on            = [module.ccm]
   source                = "./modules/hcloud_csi"
   count                 = var.use_hcloud_storage ? 1 : 0
   hcloud_csi_version    = var.hcloud_csi_version
