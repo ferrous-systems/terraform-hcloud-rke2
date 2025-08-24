@@ -46,7 +46,7 @@ module "csi" {
 module "cert_manager" {
   depends_on           = [module.ccm]
   source               = "granito-source/cert-manager/kubernetes"
-  version              = "~> 0.3.0"
+  version              = "~> 0.3.1"
   cert_manager_version = var.cert_manager_version
   keep_crds            = false
   acme_email           = var.acme_email
@@ -56,7 +56,7 @@ module "cert_manager" {
 module "headlamp" {
   depends_on       = [module.ccm]
   source           = "granito-source/headlamp/kubernetes"
-  version          = "~> 0.2.0"
+  version          = "~> 0.2.1"
   count            = var.use_headlamp ? 1 : 0
   headlamp_version = var.headlamp_version
   host             = "headlamp.${module.cluster.fqdn}"
@@ -67,7 +67,7 @@ module "headlamp" {
 module "longhorn" {
   depends_on            = [module.ccm]
   source                = "granito-source/longhorn/kubernetes"
-  version               = "~> 0.3.0"
+  version               = "~> 0.3.1"
   count                 = var.use_longhorn ? 1 : 0
   longhorn_version      = var.longhorn_version
   host                  = "longhorn.${module.cluster.fqdn}"
