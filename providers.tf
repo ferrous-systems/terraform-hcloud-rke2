@@ -2,19 +2,19 @@ terraform {
   required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
-      version = "~> 1.49.1"
+      version = "~> 1.52.0"
     }
     hetznerdns = {
       source  = "germanbrew/hetznerdns"
-      version = "~> 3.3.3"
+      version = "~> 3.4.7"
     }
     kubectl = {
       source  = "gavinbunney/kubectl"
-      version = "~> 1.18.0"
+      version = "~> 1.19.0"
     }
     remote = {
       source  = "tenstad/remote"
-      version = "~> 0.1.3"
+      version = "~> 0.2.1"
     }
   }
 }
@@ -51,7 +51,7 @@ provider "kubectl" {
 }
 
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = terraform_data.kubernetes.output.host
     cluster_ca_certificate = terraform_data.kubernetes.output.cluster_ca_certificate
     client_certificate     = terraform_data.kubernetes.output.client_certificate
