@@ -71,3 +71,9 @@ variable "image" {
   type        = string
   description = "image to use for the servers"
 }
+
+variable "additional_ssh_keys_selector" {
+  type = string
+  default = ""
+  description = "A selector for existing ssh keys that should be provisioned into the cluster"
+}

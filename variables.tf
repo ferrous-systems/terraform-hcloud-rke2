@@ -172,3 +172,9 @@ variable "use_headlamp" {
   default     = false
   description = "deploy Headlamp Kubernetes UI if true"
 }
+
+variable "additional_ssh_keys_selector" {
+  type = string
+  default = ""
+  description = "A selector for existing ssh keys that should be provisioned into the cluster"
+}
