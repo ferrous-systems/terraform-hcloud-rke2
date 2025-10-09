@@ -15,7 +15,6 @@ module "cluster" {
   agent_count  = var.agent_count
   image        = var.image
   rke2_version = var.rke2_version
-  cni          = var.cni
   additional_ssh_keys_selector = var.additional_ssh_keys_selector
 }
 

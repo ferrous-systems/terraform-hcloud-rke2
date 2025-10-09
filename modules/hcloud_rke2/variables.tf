@@ -77,9 +77,3 @@ variable "additional_ssh_keys_selector" {
   default = ""
   description = "A selector for existing ssh keys that should be provisioned into the cluster"
 }
-
-variable "cni" {
-  type        = string
-  default     = "cilium"
-  description = "The CNI to use. Supported [default, cilium] with cilium having a dedicated config"
-}

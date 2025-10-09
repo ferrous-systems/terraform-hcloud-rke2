@@ -2,13 +2,16 @@
 
 apt-get update -y
 apt-get install -y nfs-common
+curl -sSfL https://get.rke2.io/ | \
+    INSTALL_RKE2_METHOD=tar \
+    INSTALL_RKE2_TYPE=agent \
+    INSTALL_RKE2_VERSION="${rke2_version}" sh -
 
-systemctl stop apparmor.service
-systemctl disable apparmor.service
 systemctl stop multipathd.socket
 systemctl disable multipathd.socket
 systemctl stop multipathd.service
 systemctl disable multipathd.service
+systemctl enable rke2-agent.service
 
 cat <<EOF >/etc/modules-load.d/dm-crypt.conf
 dm-crypt
@@ -35,13 +38,6 @@ token: "${token}"
 node-ip: $NODE_IP
 cloud-provider-name: external
 EOF
-
-curl -sSfL https://get.rke2.io/ | \
-    INSTALL_RKE2_METHOD=tar \
-    INSTALL_RKE2_TYPE=agent \
-    INSTALL_RKE2_VERSION="${rke2_version}" sh -
-
-systemctl enable rke2-agent.service
 
 umask 0022
 

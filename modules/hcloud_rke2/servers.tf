@@ -26,8 +26,7 @@ resource "hcloud_server" "master0" {
   user_data = templatefile("${path.module}/master_setup.sh.tpl", {
     rke2_version = var.rke2_version
     token        = random_password.token.result
-    initial      = true
-    cni          = var.cni
+    initial      = !local.lb_deployed
     cluster_cidr = var.cluster_cidr
     service_cidr = var.service_cidr
     api          = local.api
@@ -92,7 +91,6 @@ resource "hcloud_server" "master1" {
     rke2_version = var.rke2_version
     token        = random_password.token.result
     initial      = false
-    cni          = var.cni
     cluster_cidr = var.cluster_cidr
     service_cidr = var.service_cidr
     api          = local.api
@@ -144,7 +142,6 @@ resource "hcloud_server" "master2" {
     rke2_version = var.rke2_version
     token        = random_password.token.result
     initial      = false
-    cni          = var.cni
     cluster_cidr = var.cluster_cidr
     service_cidr = var.service_cidr
     api          = local.api
