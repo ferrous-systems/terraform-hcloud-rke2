@@ -47,12 +47,13 @@ module "csi" {
 
 module "cert_manager" {
   depends_on           = [module.ccm]
-  source               = "granito-source/cert-manager/kubernetes"
-  version              = "~> 0.3.1"
+  source               = "./modules/terraform-kubernetes-cert-manager"
+#  version              = "~> 0.3.1"
   cert_manager_version = var.cert_manager_version
   keep_crds            = false
   acme_email           = var.acme_email
   ingress_class        = module.cluster.ingress_class
+  prometheus_service_monitor_enabled = true
 }
 
 module "headlamp" {
